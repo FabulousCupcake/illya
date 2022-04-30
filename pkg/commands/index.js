@@ -11,6 +11,7 @@ const { statusFunc } = require("./illya/status.js");
 const { deadFunc } = require("./iam/dead.js");
 const { pausedFunc } = require("./iam/paused.js");
 const { resolvedFunc } = require("./iam/resolved.js");
+const { clashingFunc } = require("./iam/clashing.js");
 
 
 const initializeCommands = client => {
@@ -24,6 +25,7 @@ const initializeCommands = client => {
   client.commands.set("dead", deadFunc);
   client.commands.set("paused", pausedFunc);
   client.commands.set("resolved", resolvedFunc);
+  client.commands.set("clashing", clashingFunc);
 }
 
 module.exports = {
