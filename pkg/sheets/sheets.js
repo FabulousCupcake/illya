@@ -138,8 +138,8 @@ const _writeSheet = async(clanName, data) => {
   return await sheet.saveUpdatedCells();
 };
 
-const writeSheet = async (clanName) => {
-  return await throttler.callFunction(_writeSheet, clanName);
+const writeSheet = async (clanName, data) => {
+  return await throttler.callFunction(_writeSheet, clanName, data);
 }
 
 module.exports = {
