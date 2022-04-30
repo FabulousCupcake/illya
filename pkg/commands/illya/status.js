@@ -29,17 +29,17 @@ const buildMessage = data => {
   const bossName = data.bossName.match(/([\w\s]+)/)[0].trim(); // Remove emojis
   lines.push(`**${data.position} • ${bossName}**`);
 
-  const buildHitLine = hit => {
+  const buildHitLine = (hit, icon) => {
     const message = [];
     // const hitter = await interaction.users.fetch(hit.hitterId);
     // const owner = await interaction.users.fetch(hit.ownerId);
 
-    message.push("✅")
+    message.push(icon)
     message.push(hit.damage);
     message.push("•");
     message.push(hit.timeline);
     message.push(`<@!${hit.hitterId}>`);
-    if (hit.hitterId != hit.ownerId) {
+    if (hit.ownerId && (hit.hitterId != hit.ownerId)) {
       message.push(`(on <@!${hit.ownerId}>)`);
     }
 
@@ -47,22 +47,40 @@ const buildMessage = data => {
   };
 
   // Add resolved hits
-  const resolvedHits = data.entries.filter(e => e.status = "Resolved");
-  resolvedHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
-  if (resolvedHits.length > 0) lines.push("");
+  const resolvedHits = data.entries.filter(e => e.status === "Resolved");
+  if (resolvedHits.length > 0) {
+    resolvedHits
+      .map(h => buildHitLine(h, "✅"))
+      .forEach(l => lines.push(l));
+  } else {
+    lines.push("No resolved hits yet");
+  }
+  lines.push("");
 
   // Add remaining HP
   lines.push(`**Remaining:** ${data.bossHp.toLocaleString()}`);
 
   // Add paused hits
-  const pausedHits = data.entries.filter(e => e.status = "Paused");
-  pausedHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
-  if (pausedHits.length > 0) lines.push("");
+  const pausedHits = data.entries.filter(e => e.status === "Paused");
+  if (pausedHits.length > 0) {
+    pausedHits
+      .map(h => buildHitLine(h, "⏸"))
+      .forEach(l => lines.push(l));
+  } else {
+    lines.push("No paused hits");
+  }
+  lines.push("");
 
   // Add dead hits
-  const deadHits = data.entries.filter(e => e.status = "Dead");
-  deadHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
-  if (deadHits.length > 0) lines.push("");
+  const deadHits = data.entries.filter(e => e.status === "Dead");
+  if (deadHits.length > 0) {
+    deadHits
+      .map(h => buildHitLine(h, "💀"))
+      .forEach(l => lines.push(l));
+  } else {
+    lines.push("No dead hits");
+  }
+  lines.push("");
 
   // Add available hits
   data.avails.forEach(a => {
