@@ -71,9 +71,10 @@ const canhitFunc = async (interaction) => {
 
   // Send message
   const verb = (remove) ? "Removed" : "Added";
+  const thing = (remove) ? "from" : "to";
   const usersMessage = mutatedUsers.map(id => `<@!${id}>`).join(" ");
   interaction.followUp({
-    content: `${verb} ${usersMessage} from Available accounts list`,
+    content: `${verb} ${usersMessage || "no one"} ${thing} Available accounts list`,
     ephemeral: true,
   });
 }
