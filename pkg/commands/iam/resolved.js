@@ -48,8 +48,8 @@ const resolvedSubCommand = new SlashCommandSubcommandBuilder()
     .addUserOption(option =>
       option
       .setName("account")
-      .setDescription("Whose account are you hitting with?"))
-      .setRequired(true)
+      .setDescription("Whose account are you hitting with?")
+      .setRequired(true))
     .addStringOption(option =>
       option
       .setName("timeline")

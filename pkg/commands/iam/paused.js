@@ -51,18 +51,18 @@ const pausedSubCommand = new SlashCommandSubcommandBuilder()
     .addUserOption(option =>
       option
       .setName("account")
-      .setDescription("Whose account are you hitting with?"))
-      .setRequired(true)
+      .setDescription("Whose account are you hitting with?")
+      .setRequired(true))
     .addStringOption(option =>
       option
       .setName("timeline")
-      .setDescription("Timeline code of the hit"))
-      .setRequired(true)
+      .setDescription("Timeline code of the hit")
+      .setRequired(true))
     .addIntegerOption(option =>
       option
       .setName("damage")
-      .setDescription("Estimated minimum damage of the hit"))
-      .setRequired(true)
+      .setDescription("Estimated minimum damage of the hit")
+      .setRequired(true))
 
 module.exports = {
   pausedFunc,
