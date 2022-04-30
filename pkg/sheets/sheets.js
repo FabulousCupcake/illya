@@ -108,13 +108,13 @@ const writeSheet = async(clanName, data) => {
     const cellDamage = sheet.getCell(row, COLUMN_DAMAGE);
     const cellStatus = sheet.getCell(row, COLUMN_STATUS);
 
-    cellHitterId.value = entry.cellHitterId;
-    cellHitterName.value = entry.cellHitterName;
-    cellOwnerId.value = entry.cellOwnerId;
-    cellOwnerName.value = entry.cellOwnerName;
-    cellTimeline.value = entry.cellTimeline;
-    cellDamage.value = entry.cellDamage;
-    cellStatus.value = entry.cellStatus;
+    cellHitterId.value = entry.hitterId;
+    cellHitterName.value = entry.hitterName;
+    cellOwnerId.value = entry.ownerId;
+    cellOwnerName.value = entry.ownerName;
+    cellTimeline.value = entry.timeline;
+    cellDamage.value = entry.damage;
+    cellStatus.value = entry.status;
   });
 
   // And again for availability
