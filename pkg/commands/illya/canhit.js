@@ -59,10 +59,9 @@ const canhitFunc = async (interaction) => {
 
       mutatedUsers.push(userId);
       const member = await interaction.guild.members.fetch(userId);
-      console.log(member);
       data.avails.push({
         id: userId,
-        name: member.nickname,
+        name: member.user.username,
       });
     });
   }
@@ -71,7 +70,7 @@ const canhitFunc = async (interaction) => {
   await writeSheet(config.name, data);
 
   // Send message
-  const verb = (removed) ? "Removed" : "Added";
+  const verb = (remove) ? "Removed" : "Added";
   const usersMessage = mutatedUsers.map(id => `<@!${id}>`).join(" ");
   interaction.followUp({
     content: `${verb} ${usersMessage} from Available accounts list`,
