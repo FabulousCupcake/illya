@@ -60,7 +60,7 @@ const canhitFunc = async (interaction) => {
       mutatedUsers.push(userId);
       data.avails.push({
         id: userId,
-        name: await interaction.guild.member.fetch(userId).user.username,
+        name: await interaction.guild.members.fetch(userId).user.username,
       });
     });
   }
