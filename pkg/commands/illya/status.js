@@ -84,8 +84,6 @@ const statusFunc = async (interaction) => {
   });
 
   // Resolve clan name
-  if (!interaction.member) {
-  }
   const config = determineClanConfig(interaction.member);
 
   // Obtain and parse list of users in the string message
