@@ -1,5 +1,6 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 const { clanConfigs } = require("../config/config");
+const { Semaphore } = require("../utils/semaphore");
 
 const SHEET_TITLE = "Hit Coordinate";
 
@@ -14,6 +15,7 @@ const COLUMN_STATUS = 6;
 const ROW_HITS_START = 4;
 const ROW_AVAIL_START = 36;
 
+const throttler = new Semaphore(1);
 const docs = {};
 
 const initializeSpreadsheetClient = async () => {
@@ -37,7 +39,7 @@ const initializeSpreadsheetClient = async () => {
 };
 
 // Reads sheets to JSON
-const readSheet = async(clanName) => {
+const _readSheet = async (clanName) => {
   const doc = docs[clanName];
   doc.resetLocalCache();
   await doc.loadInfo();
@@ -90,8 +92,12 @@ const readSheet = async(clanName) => {
   };
 };
 
+const readSheet = async (clanName) => {
+  await throttler.callFunction(_readSheet, clanName);
+}
+
 // Writes JSON to sheet
-const writeSheet = async(clanName, data) => {
+const _writeSheet = async(clanName, data) => {
   const doc = docs[clanName];
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
   await sheet.loadCells(["A1:G34", "A37:A66"]);
@@ -131,6 +137,10 @@ const writeSheet = async(clanName, data) => {
   // Write
   return await sheet.saveUpdatedCells();
 };
+
+const writeSheet = async (clanName) => {
+  await throttler.callFunction(_writeSheet, clanName);
+}
 
 module.exports = {
   initializeSpreadsheetClient,
