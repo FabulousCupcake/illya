@@ -61,15 +61,21 @@ const deadFunc = async (interaction) => {
 
   // Add new entry if we didn't mutate anything
   if (!mutated) {
+    const ownerId = (owner.id == hitter.id) ? "" : owner.id;
+    const ownerName = (owner.name == hitter.name) ? "" : owner.name;
+
     data.entries.push({
       hitterId: hitter.id,
       hitterName: hitter.username,
-      ownerId: (owner.id == hitter.id) ? "" : owner.id,
-      ownerName: (owner.name == hitter.name) ? "" : owner.name,
+      ownerId: ownerId,
+      ownerName: ownerName,
       timeline: timeline,
       damage: damage,
       status: "Dead",
     });
+
+    // Since we added a new entry, check avail list and remove if found
+    data.avails = data.avails.filter(a => a.id != ownerId);
   }
 
   // Write to sheet
