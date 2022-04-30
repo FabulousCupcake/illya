@@ -66,7 +66,7 @@ const handler = async (interaction) => {
 
   // Execute it
   try {
-    commandFunc(interaction);
+    await commandFunc(interaction);
   } catch (err) {
     interaction.followUp({
       content: "Oops! Something went wrong!",
