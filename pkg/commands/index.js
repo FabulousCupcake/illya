@@ -8,9 +8,9 @@ const { statusFunc } = require("./illya/status.js");
 // const { updateFunc } = require("./illya/update.js");
 
 // iam
-const { deadSubCommand } = require("./iam/dead.js");
-const { pausedSubCommand } = require("./iam/paused.js");
-const { resolvedSubCommand } = require("./iam/resolved.js");
+const { deadFunc } = require("./iam/dead.js");
+const { pausedFunc } = require("./iam/paused.js");
+const { resolvedFunc } = require("./iam/resolved.js");
 
 
 const initializeCommands = client => {
@@ -21,9 +21,9 @@ const initializeCommands = client => {
   client.commands.set("status", statusFunc);
   // client.commands.set("update", updateFunc);
 
-  client.commands.set("dead", deadSubCommand);
-  client.commands.set("paused", pausedSubCommand);
-  client.commands.set("resolved", resolvedSubCommand);
+  client.commands.set("dead", deadFunc);
+  client.commands.set("paused", pausedFunc);
+  client.commands.set("resolved", resolvedFunc);
 }
 
 module.exports = {
