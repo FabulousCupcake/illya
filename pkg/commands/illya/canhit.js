@@ -48,15 +48,15 @@ const canhitFunc = async (interaction) => {
 const canhitSubCommand = new SlashCommandSubcommandBuilder()
   .setName("canhit")
   .setDescription("Add or remove accounts that can currently hit")
-  .addBooleanOption(option =>
-    option
-    .setName("remove")
-    .setDescription("Removes instead adding if set to true"))
   .addStringOption(option =>
     option
     .setName("users")
     .setDescription("List of discord tags of people whose account can hit")
     .setRequired(true))
+  .addBooleanOption(option =>
+    option
+    .setName("remove")
+    .setDescription("Removes instead adding if set to true"))
 
 module.exports = {
   canhitFunc,
