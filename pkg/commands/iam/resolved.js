@@ -62,7 +62,7 @@ const resolvedFunc = async (interaction) => {
   // Add new entry if we didn't mutate anything
   if (!mutated) {
     const ownerId = (owner.id == hitter.id) ? "" : owner.id;
-    const ownerName = (owner.name == hitter.name) ? "" : owner.name;
+    const ownerName = (owner.username == hitter.username) ? "" : owner.username;
 
     data.entries.push({
       hitterId: hitter.id,
