@@ -107,10 +107,10 @@ const updateSubCommand = new SlashCommandSubcommandBuilder()
     option
     .setName("status")
     .setDescription("What is their hit status?")
-    .addChoice("clashing", "clashing")
-    .addChoice("dead", "dead")
-    .addChoice("paused", "paused")
-    .addChoice("resolved", "resolved")
+    .addChoice("Clashing", "Clashing")
+    .addChoice("Dead", "Dead")
+    .addChoice("Paused", "Paused")
+    .addChoice("Resolved", "Resolved")
     .setRequired(true))
   .addStringOption(option =>
     option
