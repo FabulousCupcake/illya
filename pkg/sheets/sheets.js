@@ -43,12 +43,12 @@ const readSheet = async(clanName) => {
   await doc.loadInfo();
 
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
-  await sheet.loadCells(["A1:G34", "A37:B66", "B2:C2", "J2"]);
+  await sheet.loadCells(["A1:G34", "A37:B66", "B2:C2", "J4"]);
 
   // Read metadatas
   const position = sheet.getCell(1, 1).value;
   const bossName = sheet.getCell(1, 2).value;
-  const bossHp = sheet.getCell(1, 9).value;
+  const bossHp = sheet.getCell(3, 9).value;
 
   // Read each rows
   const entries = [];
