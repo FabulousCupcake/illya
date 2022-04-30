@@ -1,12 +1,17 @@
 const { Collection } = require('discord.js');
 
+// illya
 const { canhitFunc } = require("./illya/canhit.js");
 // const { helpFunc } = require("./illya/help.js");
 // const { resetFunc } = require("./illya/reset.js");
 const { statusFunc } = require("./illya/status.js");
 // const { updateFunc } = require("./illya/update.js");
 
-const { iamFunc } = require ("./iam")
+// iam
+const { deadSubCommand } = require("./iam/dead.js");
+const { pausedSubCommand } = require("./iam/paused.js");
+const { resolvedSubCommand } = require("./iam/resolved.js");
+
 
 const initializeCommands = client => {
   client.commands = new Collection();
@@ -16,7 +21,9 @@ const initializeCommands = client => {
   client.commands.set("status", statusFunc);
   // client.commands.set("update", updateFunc);
 
-  client.commands.set("iam", iamFunc);
+  client.commands.set("dead", deadSubCommand);
+  client.commands.set("paused", pausedSubCommand);
+  client.commands.set("resolved", resolvedSubCommand);
 }
 
 module.exports = {
