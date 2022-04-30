@@ -48,7 +48,7 @@ const readSheet = async(clanName) => {
   // Read metadatas
   const position = sheet.getCell(1, 1).value;
   const bossName = sheet.getCell(1, 2).value;
-  const bossHp = parseInt(sheet.getCell(1, 9).value, 10);
+  const bossHp = sheet.getCell(1, 9).value;
 
   // Read each rows
   const entries = [];
