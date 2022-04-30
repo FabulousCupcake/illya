@@ -73,7 +73,7 @@ const deadFunc = async (interaction) => {
   // Send message
   const verb = (mutated) ? "Updated" : "Added";
   interaction.followUp({
-    content: `${verb} a hit by <@!${hitter.id}> (on <@!${owner.id})`,
+    content: `${verb} a hit by <@!${hitter.id}> (on <@!${owner.id}>)`,
     ephemeral: true,
   });
 }
