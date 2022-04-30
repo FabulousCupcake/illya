@@ -32,15 +32,12 @@ const statusFunc = async (interaction) => {
   });
 
   // Resolve clan name
-  console.log(interaction.member);
   if (!interaction.member) {
-    console.log("wtf?");
   }
   const config = determineClanConfig(interaction.member);
 
   // Obtain and parse list of users in the string message
   const data = await readSheet(config.name);
-  console.log(data);
 
   // Send message
   interaction.followUp({
