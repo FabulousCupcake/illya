@@ -60,15 +60,17 @@ const deadFunc = async (interaction) => {
   });
 
   // Add new entry if we didn't mutate anything
-  data.entries.push({
-    hitterId: hitter.id,
-    hitterName: hitter.username,
-    ownerId: (owner.id == hitter.id) ? "" : owner.id,
-    ownerName: (owner.name == hitter.name) ? "" : owner.name,
-    timeline: timeline,
-    damage: damage,
-    status: "Dead",
-  });
+  if (!mutated) {
+    data.entries.push({
+      hitterId: hitter.id,
+      hitterName: hitter.username,
+      ownerId: (owner.id == hitter.id) ? "" : owner.id,
+      ownerName: (owner.name == hitter.name) ? "" : owner.name,
+      timeline: timeline,
+      damage: damage,
+      status: "Dead",
+    });
+  }
 
   // Write to sheet
   await writeSheet(config.name, data);
