@@ -37,9 +37,7 @@ const canhitFunc = async (interaction) => {
   // Collect all info
   const remove = interaction.options.getBoolean("remove");
   const usersText = interaction.options.getString("users");
-  console.log(usersText);
   const users = [...usersText.matchAll(/\d+/g)].map(m => m[0]);
-  console.log(users);
 
   // Edit avails list
   const data = await readSheet(config.name);
