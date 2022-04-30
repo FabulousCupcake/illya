@@ -42,7 +42,7 @@ const deadFunc = async (interaction) => {
 
   // Try mutate
   let mutated = false;
-  const data = await readSheet();
+  const data = await readSheet(config.name);
   data.entries = data.entries.map(e => {
     if (e.hitterId != hitter.id) return e;
     if (e.ownerId && (e.ownerId != owner.id)) return e;
@@ -68,7 +68,6 @@ const deadFunc = async (interaction) => {
   });
 
   // Write to sheet
-  console.log(config);
   await writeSheet(config.name, data);
 
   // Send message
