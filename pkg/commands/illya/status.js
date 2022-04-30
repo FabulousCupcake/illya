@@ -38,6 +38,7 @@ const statusFunc = async (interaction) => {
 
   // Obtain and parse list of users in the string message
   const data = await readSheet(config.name);
+  console.log(data);
 
   // Send message
   interaction.followUp({
