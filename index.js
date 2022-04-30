@@ -14,7 +14,7 @@ const handler = async (interaction) => {
   // Respond only to slashcommand and certain command names
   if (!interaction.isCommand()) return;
   if (
-    interaction.commandName !== "illya" ||
+    interaction.commandName !== "illya" &&
     interaction.commandName !== "iam"
   ) {
     return;
