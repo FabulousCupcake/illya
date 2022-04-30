@@ -48,13 +48,8 @@ const buildMessage = data => {
 
   // Add resolved hits
   const resolvedHits = data.entries.filter(e => e.status === "Resolved");
-  if (resolvedHits.length > 0) {
-    resolvedHits
-      .map(h => buildHitLine(h, "✅"))
-      .forEach(l => lines.push(l));
-  } else {
-    lines.push("No resolved hits yet");
-  }
+  if (resolvedHits.length <= 0) lines.push("No resolved hits yet");
+  resolvedHits.map(h => buildHitLine(h, "✅")).forEach(l => lines.push(l));
   lines.push("");
 
   // Add remaining HP
@@ -62,24 +57,14 @@ const buildMessage = data => {
 
   // Add paused hits
   const pausedHits = data.entries.filter(e => e.status === "Paused");
-  if (pausedHits.length > 0) {
-    pausedHits
-      .map(h => buildHitLine(h, "⏸"))
-      .forEach(l => lines.push(l));
-  } else {
-    lines.push("No paused hits");
-  }
+  if (pausedHits.length <= 0) lines.push("No paused hits");
+  pausedHits.map(h => buildHitLine(h, "⏸")).forEach(l => lines.push(l));
   lines.push("");
 
   // Add dead hits
   const deadHits = data.entries.filter(e => e.status === "Dead");
-  if (deadHits.length > 0) {
-    deadHits
-      .map(h => buildHitLine(h, "💀"))
-      .forEach(l => lines.push(l));
-  } else {
-    lines.push("No dead hits");
-  }
+  if (deadHits.length > 0) lines.push("No dead hits");
+  deadHits.map(h => buildHitLine(h, "💀")).forEach(l => lines.push(l));
   lines.push("");
 
   // Add available hits
@@ -105,6 +90,7 @@ const statusFunc = async (interaction) => {
 
   // Obtain and parse list of users in the string message
   const data = await readSheet(config.name);
+  console.log(data);
 
   // Build nice message
   const message = buildMessage(data);
