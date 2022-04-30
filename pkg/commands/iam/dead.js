@@ -47,7 +47,7 @@ const deadFunc = async (interaction) => {
     const owner = (e.ownerId) ? e.ownerId : e.hitterId;
 
     if (e.hitterId != hitter.id) return e;
-    if (owner == owner.id) return e;
+    if (owner != owner.id) return e;
 
     mutated = true;
     return {
