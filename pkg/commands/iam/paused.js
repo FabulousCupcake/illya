@@ -75,7 +75,9 @@ const pausedFunc = async (interaction) => {
     });
 
     // Since we added a new entry, check avail list and remove if found
+    console.log("Before", data.avails);
     data.avails = data.avails.filter(a => a.id != ownerId);
+    console.log("After", data.avails);
   }
 
   // Write to sheet
