@@ -43,7 +43,6 @@ const readSheet = async(clanName) => {
   await doc.loadInfo();
 
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
-  sheet.loadInfo();
   await sheet.loadCells(["A1:G34", "A37:B66"]);
 
   // Read each rows
