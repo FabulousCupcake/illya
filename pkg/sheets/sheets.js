@@ -107,6 +107,7 @@ const writeSheet = async(clanName, data) => {
     sheet.getCell(rowHits, COLUMN_OWNER_NAME).value = "";
     sheet.getCell(rowHits, COLUMN_TIMELINE).value = "";
     sheet.getCell(rowHits, COLUMN_DAMAGE).value = "";
+    sheet.getCell(rowHits, COLUMN_STATUS).value = "";
     sheet.getCell(rowAvail, COLUMN_HITTER_ID).value = "";
     sheet.getCell(rowAvail, COLUMN_HITTER_NAME).value = "";
   }
