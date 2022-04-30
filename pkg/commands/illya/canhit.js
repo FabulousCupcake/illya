@@ -19,7 +19,7 @@ const checkPermissions = async (interaction) => {
   }
 
   return {
-    allowed: false,
+    allowed: true,
     reason: "You are not allowed to do this!"
   }
 };
