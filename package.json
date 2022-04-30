@@ -1,0 +1,26 @@
+{
+  "name": "illya",
+  "version": "1.0.0",
+  "description": "Princess Connect! Re:Dive Clan Battle Self-Service Hit Coordination Bot",
+  "author": "FabulousCupcake",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabulousCupcake/illya.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "register": "node tools/register.js",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "dependencies": {
+    "@discordjs/rest": "^0.4.1",
+    "discord-api-types": "^0.32.0",
+    "discord.js": "^13.6.0",
+    "google-spreadsheet": "^3.2.0",
+    "saren": "github:FabulousCupcake/saren#master"
+  }
+}
