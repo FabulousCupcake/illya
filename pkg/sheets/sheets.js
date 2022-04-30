@@ -42,9 +42,9 @@ const readSheet = async(clanName) => {
   doc.resetLocalCache();
   await doc.loadInfo();
 
-  console.log(doc.sheetsByTitle)
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
-  await sheet.loadCells(["A1:G34", "A37:A66"]);
+  sheet.loadInfo();
+  await sheet.loadCells(["A1:G34", "A37:B66"]);
 
   // Read each rows
   const entries = [];
