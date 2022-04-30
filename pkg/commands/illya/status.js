@@ -35,7 +35,7 @@ const buildMessage = data => {
     // const owner = await interaction.users.fetch(hit.ownerId);
 
     message.push(icon)
-    message.push(hit.damage);
+    message.push(hit.damage.toLocaleString());
     message.push("•");
     message.push(hit.timeline);
     message.push(`<@!${hit.hitterId}>`);
