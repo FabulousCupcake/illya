@@ -24,6 +24,55 @@ const checkPermissions = async (interaction) => {
   }
 };
 
+const buildMessage = data => {
+  const lines = [];
+  const bossName = data.bossName.match(/([\w\s]+)/)[0].trim(); // Remove emojis
+  lines.push(`**${data.position} • ${bossName}**`);
+
+  const buildHitLine = hit => {
+    const message = [];
+    // const hitter = await interaction.users.fetch(hit.hitterId);
+    // const owner = await interaction.users.fetch(hit.ownerId);
+
+    message.push("✅")
+    message.push(hit.damage);
+    message.push("•");
+    message.push(hit.timeline);
+    message.push(`<@!${hit.hitterId}>`);
+    if (hit.hitterId != hit.ownerId) {
+      message.push(`(on <@!${hit.ownerId}>)`);
+    }
+
+    return message.filter(Boolean).join(" ");
+  };
+
+  // Add resolved hits
+  const resolvedHits = data.entries.filter(e => e.status = "Resolved");
+  resolvedHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
+  if (resolvedHits.length > 0) lines.push("");
+
+  // Add remaining HP
+  lines.push(`**Remaining:** ${data.bossHp.toLocaleString()}`);
+
+  // Add paused hits
+  const pausedHits = data.entries.filter(e => e.status = "Paused");
+  pausedHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
+  if (pausedHits.length > 0) lines.push("");
+
+  // Add dead hits
+  const deadHits = data.entries.filter(e => e.status = "Dead");
+  deadHits.map(buildHitLine).forEach(hitLine => lines.push(hitLine));
+  if (deadHits.length > 0) lines.push("");
+
+  // Add available hits
+  data.avails.forEach(a => {
+    const message = `🆓 <@!${a.id}>`;
+    lines.push(message);
+  });
+
+  return lines.join("\n");
+};
+
 const statusFunc = async (interaction) => {
   const { allowed, reason } = await checkPermissions(interaction);
   if (!allowed) return interaction.followUp({
@@ -38,11 +87,13 @@ const statusFunc = async (interaction) => {
 
   // Obtain and parse list of users in the string message
   const data = await readSheet(config.name);
-  console.log(data);
+
+  // Build nice message
+  const message = buildMessage(data);
 
   // Send message
   interaction.followUp({
-    content: `TBA done executing status`,
+    content: message,
     ephemeral: true,
   });
 }

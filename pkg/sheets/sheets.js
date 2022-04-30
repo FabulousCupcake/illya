@@ -43,7 +43,12 @@ const readSheet = async(clanName) => {
   await doc.loadInfo();
 
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
-  await sheet.loadCells(["A1:G34", "A37:B66"]);
+  await sheet.loadCells(["A1:G34", "A37:B66", "B2:C2", "J2"]);
+
+  // Read metadatas
+  const position = sheet.getCell(1, 1).value;
+  const bossName = sheet.getCell(1, 2).value;
+  const bossHp = sheet.getCell(1, 9).value;
 
   // Read each rows
   const entries = [];
@@ -68,8 +73,8 @@ const readSheet = async(clanName) => {
   for(let i=0; i<30; i++) {
     const row = ROW_AVAIL_START + i;
     const avail = {
-      id: sheet.getCell(row, COLUMN_HITTER_ID),
-      name: sheet.getCell(row, COLUMN_HITTER_NAME),
+      id: sheet.getCell(row, COLUMN_HITTER_ID).value,
+      name: sheet.getCell(row, COLUMN_HITTER_NAME).value,
     }
 
     if (!avail.id) break;
@@ -79,6 +84,9 @@ const readSheet = async(clanName) => {
   return {
     entries,
     avails,
+    position,
+    bossName,
+    bossHp,
   };
 };
 
