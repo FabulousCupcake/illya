@@ -38,7 +38,7 @@ const canhitFunc = async (interaction) => {
   const remove = interaction.options.getBoolean("remove");
   const usersText = interaction.options.getString("users");
   console.log(usersText);
-  const users = [...usersText.matchAll(/\d+/g)];
+  const users = [...usersText.matchAll(/\d+/g)].map(m => m[0]);
   console.log(users);
 
   // Edit avails list
@@ -60,7 +60,7 @@ const canhitFunc = async (interaction) => {
       mutatedUsers.push(userId);
       data.avails.push({
         id: userId,
-        name: await interaction.client.users.fetch(userId).username,
+        name: await interaction.guild.member.fetch(userId).user.username,
       });
     });
   }
