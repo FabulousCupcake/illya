@@ -96,6 +96,21 @@ const writeSheet = async(clanName, data) => {
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
   await sheet.loadCells(["A1:G34", "A37:A66"]);
 
+  // Blank em all
+  for(let i=0; i<30; i++) {
+    const rowHits = ROW_HITS_START + i;
+    const rowAvail = ROW_AVAIL_START + i;
+
+    sheet.getCell(rowHits, COLUMN_HITTER_ID).value = "";
+    sheet.getCell(rowHits, COLUMN_HITTER_NAME).value = "";
+    sheet.getCell(rowHits, COLUMN_OWNER_ID).value = "";
+    sheet.getCell(rowHits, COLUMN_OWNER_NAME).value = "";
+    sheet.getCell(rowHits, COLUMN_TIMELINE).value = "";
+    sheet.getCell(rowHits, COLUMN_DAMAGE).value = "";
+    sheet.getCell(rowAvail, COLUMN_HITTER_ID).value = "";
+    sheet.getCell(rowAvail, COLUMN_HITTER_NAME).value = "";
+  }
+
   // Write all hit entries
   data.entries.forEach((entry, index) => {
     const row = ROW_HITS_START + index;
