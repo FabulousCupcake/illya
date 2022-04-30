@@ -1,6 +1,6 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
-const { isCalledByOwner, isCalledByClanMember } = require("saren/pkg/acl/acl.js");
+const { isCalledByOwner, isCalledByClanMember, determineClanConfig } = require("saren/pkg/acl/acl.js");
 const { readSheet } = require("../../sheets/sheets.js");
 
 const checkPermissions = async (interaction) => {
@@ -31,8 +31,11 @@ const statusFunc = async (interaction) => {
     ephemeral: true,
   });
 
+  // Resolve clan name
+  const config = determineClanConfig(interaction.member);
+
   // Obtain and parse list of users in the string message
-  const data = await readSheet();
+  const data = await readSheet(config.name);
   console.log(data);
 
   // Send message
