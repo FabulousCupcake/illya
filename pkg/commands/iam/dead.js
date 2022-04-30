@@ -68,6 +68,7 @@ const deadFunc = async (interaction) => {
   });
 
   // Write to sheet
+  console.log(config);
   await writeSheet(config.name, data);
 
   // Send message
