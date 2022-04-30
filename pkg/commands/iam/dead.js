@@ -44,10 +44,11 @@ const deadFunc = async (interaction) => {
   let mutated = false;
   const data = await readSheet(config.name);
   data.entries = data.entries.map(e => {
-    const owner = (e.ownerId) ? e.ownerId : e.hitterId;
+    // e.ownerId may be omitted (i.e. hitter is owner)
+    const ownerId = (e.ownerId) ? e.ownerId : e.hitterId;
 
     if (e.hitterId != hitter.id) return e;
-    if (owner != owner.id) return e;
+    if (ownerId != owner.id) return e;
 
     mutated = true;
     return {
