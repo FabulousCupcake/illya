@@ -44,8 +44,10 @@ const deadFunc = async (interaction) => {
   let mutated = false;
   const data = await readSheet(config.name);
   data.entries = data.entries.map(e => {
+    const owner = (e.ownerId) ? e.ownerId : e.hitterId;
+
     if (e.hitterId != hitter.id) return e;
-    if (e.ownerId && (e.ownerId != owner.id)) return e;
+    if (owner == owner.id) return e;
 
     mutated = true;
     return {
