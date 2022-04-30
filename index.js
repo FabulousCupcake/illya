@@ -1,11 +1,12 @@
 const { Client, Intents } = require("discord.js");
 
+const { Semaphore } = require("./pkg/utils/semaphore");
 const { initializeSpreadsheetClient } = require("./pkg/sheets/sheets.js");
 const { initializeCommands } = require("./pkg/commands");
 
 const TOKEN = process.env.DISCORD_TOKEN;
-const GUILD_ID = process.env.DISCORD_GUILD_ID;
 
+const throttler = new Semaphore(1);
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
 
 const readyHandler = () => console.log(`Logged in as ${client.user.tag}!`);
@@ -67,7 +68,7 @@ const handler = async (interaction) => {
 
   // Execute it
   try {
-    await commandFunc(interaction);
+    await throttler.callFunction(commandFunc, interaction);
   } catch (err) {
     interaction.followUp({
       content: "Oops! Something went wrong!",
