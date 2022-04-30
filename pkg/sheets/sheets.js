@@ -93,7 +93,7 @@ const _readSheet = async (clanName) => {
 };
 
 const readSheet = async (clanName) => {
-  await throttler.callFunction(_readSheet, clanName);
+  return await throttler.callFunction(_readSheet, clanName);
 }
 
 // Writes JSON to sheet
@@ -139,7 +139,7 @@ const _writeSheet = async(clanName, data) => {
 };
 
 const writeSheet = async (clanName) => {
-  await throttler.callFunction(_writeSheet, clanName);
+  return await throttler.callFunction(_writeSheet, clanName);
 }
 
 module.exports = {
