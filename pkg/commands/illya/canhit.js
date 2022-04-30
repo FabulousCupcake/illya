@@ -58,9 +58,11 @@ const canhitFunc = async (interaction) => {
       if (entryExists) return;
 
       mutatedUsers.push(userId);
+      const member = await interaction.guild.members.fetch(userId);
+      console.log(member);
       data.avails.push({
         id: userId,
-        name: await interaction.guild.members.fetch(userId).user.username,
+        name: member.nickname,
       });
     });
   }
