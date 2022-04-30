@@ -53,7 +53,7 @@ const clashingFunc = async (interaction) => {
     return {
       ...e,
       timeline: (timeline) ? timeline : e.timeline,
-      damage: (damage) ? damage : e.damage,
+      damage: "",
       status: "Clashing",
     };
   });
@@ -69,7 +69,7 @@ const clashingFunc = async (interaction) => {
       ownerId: ownerId,
       ownerName: ownerName,
       timeline: timeline,
-      damage: damage,
+      damage: "",
       status: "Clashing",
     });
 
