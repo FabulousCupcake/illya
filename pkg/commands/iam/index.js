@@ -5,8 +5,8 @@ const { pausedSubCommand } = require("./paused.js");
 const { resolvedSubCommand } = require("./resolved.js");
 
 const iamCommand = new SlashCommandBuilder()
-  .setName("illya")
-  .setDescription("PCRD Hit Coordination Helper Bot")
+  .setName("iam")
+  .setDescription("Update my hit status")
   .setDefaultPermission(false)
   .addSubcommand(deadSubCommand)
   .addSubcommand(pausedSubCommand)
