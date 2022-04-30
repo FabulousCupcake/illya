@@ -1,7 +1,7 @@
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 
-const { clanConfigs, ownerDiscordId } = require("saren/pkg/config/config");
+const { clanConfigs, ownerDiscordId } = require("../pkg/config/config");
 
 const { iamCommand } = require("../pkg/commands/iam");
 const { illyaCommand } = require("../pkg/commands/illya");

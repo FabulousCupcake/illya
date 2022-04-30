@@ -1,5 +1,5 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const { clanConfigs } = require("saren/pkg/config/config");
+const { clanConfigs } = require("../config/config");
 
 const SHEET_TITLE = "Hit Coordinate";
 
