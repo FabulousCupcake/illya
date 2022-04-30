@@ -93,7 +93,7 @@ const readSheet = async(clanName) => {
 // Writes JSON to sheet
 const writeSheet = async(clanName, data) => {
   const doc = docs[clanName];
-  const sheet = doc.sheetsByTitle(SHEET_TITLE);
+  const sheet = doc.sheetsByTitle[SHEET_TITLE];
   await sheet.loadCells(["A1:G34", "A37:A66"]);
 
   // Write all hit entries
