@@ -80,9 +80,9 @@ const handler = async (interaction) => {
 // Fetch guild and roles and shit to populate cache
 const initHandler = async () => {
   console.info("Populating guild cache...");
-  await client.guilds.fetch(DISCORD_GUILD_ID);
+  await client.guilds.fetch(GUILD_ID);
   console.info("Populating guild roles cache...");
-  await client.guilds.resolve(DISCORD_GUILD_ID).roles.fetch();
+  await client.guilds.resolve(GUILD_ID).roles.fetch();
   console.info("Finished pre-populating caches.")
 }
 
