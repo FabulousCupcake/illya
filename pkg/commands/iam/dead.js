@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember } = require("saren/pkg/acl/acl.js");
+const { readSheet, writeSheet } = require("../../sheets/sheets.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -30,17 +31,49 @@ const deadFunc = async (interaction) => {
     ephemeral: true,
   });
 
-  // Is it a delete operation?
-  const isDeleteOperation = interaction.options.getBoolean("remove") || false;
+  // Resolve clan name
+  const config = determineClanConfig(interaction.member);
 
-  // Obtain and parse list of users in the string message
-  const account = interaction.options.getUser("account");
+  // Collect all info
+  const hitter = interaction.user;
+  const owner = interaction.options.getUser("account");
   const timeline = interaction.options.getString("timeline");
   const damage = interaction.options.getInteger("damage");
 
+  // Try mutate
+  let mutated = false;
+  const data = await readSheet();
+  data.entries = data.entries.map(e => {
+    if (e.hitterId != hitter.id) return e;
+    if (e.ownerId && (e.ownerId != owner.id)) return e;
+
+    mutated = true;
+    return {
+      ...e,
+      timeline: (timeline) ? timeline : e.timeline,
+      damage: (damage) ? damage : e.damage,
+      status: "Dead",
+    };
+  });
+
+  // Add new entry if we didn't mutate anything
+  data.entries.push({
+    hitterId: hitter.id,
+    hitterName: hitter.username,
+    ownerId: (owner.id == hitter.id) ? "" : owner.id,
+    ownerName: (owner.name == hitter.name) ? "" : owner.name,
+    timeline: timeline,
+    damage: damage,
+    status: "Dead",
+  });
+
+  // Write to sheet
+  await writeSheet(config.name, data);
+
   // Send message
+  const verb = (mutated) ? "Updated" : "Added";
   interaction.followUp({
-    content: `TBA Done executing dead`,
+    content: `${verb} a hit by <@!${hitter.id}> (on <@!${owner.id})`,
     ephemeral: true,
   });
 }
