@@ -72,7 +72,7 @@ const readSheet = async(clanName) => {
       name: sheet.getCell(row, COLUMN_HITTER_NAME),
     }
 
-    if (!id) break;
+    if (!avail.id) break;
     avails.push(avail);
   }
 
