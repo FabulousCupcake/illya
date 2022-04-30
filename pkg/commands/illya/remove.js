@@ -35,7 +35,7 @@ const removeFunc = async (interaction) => {
   const config = determineClanConfig(interaction.member);
 
   // Collect all info
-  const hitter = interaction.user;
+  const hitter = interaction.options.getUser("hitter");
   const owner = interaction.options.getUser("account");
 
   // Remove
