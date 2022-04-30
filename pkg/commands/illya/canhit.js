@@ -30,17 +30,48 @@ const canhitFunc = async (interaction) => {
     ephemeral: true,
   });
 
-  // Is it a delete operation?
-  const isDeleteOperation = interaction.options.getBoolean("remove") || false;
+  // Resolve clan name
+  const config = determineClanConfig(interaction.member);
 
-  // Obtain and parse list of users in the string message
-  const users = interaction.options.getUser("users");
-
+  // Collect all info
+  const remove = interaction.options.getBoolean("remove");
+  const usersText = interaction.options.getString("users");
+  console.log(usersText);
+  const users = [...usersText.matchAll(/\d+/g)];
   console.log(users);
 
+  // Edit avails list
+  const data = await readSheet(config.name);
+
+  // Remove? or add?
+  let mutatedUsers = [];
+  if (remove) {
+    users.forEach(userId => {
+      mutatedUsers.push(userId);
+      data.avails = data.avails.filter(a => a.id != userId);
+    });
+  } else {
+    users.forEach(userId => {
+      // Check if already in entries table
+      const entryExists = !!data.entries.find(e => e.ownerId == userId);
+      if (entryExists) return;
+
+      mutatedUsers.push(userId);
+      data.avails.push({
+        id: userId,
+        name: await interaction.client.users.fetch(userId).username,
+      });
+    });
+  }
+
+  // Write to sheet
+  await writeSheet(config.name, data);
+
   // Send message
+  const verb = (removed) ? "Removed" : "Added";
+  const usersMessage = mutatedUsers.map(id => `<@!${id}>`).join(" ");
   interaction.followUp({
-    content: `TBA Done executing canhit`,
+    content: `${verb} ${usersMessage} from Available accounts list`,
     ephemeral: true,
   });
 }
