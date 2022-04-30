@@ -51,7 +51,7 @@ const canhitFunc = async (interaction) => {
       data.avails = data.avails.filter(a => a.id != userId);
     });
   } else {
-    users.forEach(userId => {
+    users.forEach(async (userId) => {
       // Check if already in entries table
       const entryExists = !!data.entries.find(e => e.ownerId == userId);
       if (entryExists) return;
