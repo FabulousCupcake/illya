@@ -4,6 +4,7 @@ const { initializeSpreadsheetClient } = require("./pkg/sheets/sheets.js");
 const { initializeCommands } = require("./pkg/commands");
 
 const TOKEN = process.env.DISCORD_TOKEN;
+const GUILD_ID = process.env.DISCORD_GUILD_ID;
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
 
@@ -76,10 +77,20 @@ const handler = async (interaction) => {
   }
 };
 
+// Fetch guild and roles and shit to populate cache
+const initHandler = async () => {
+  console.info("Populating guild cache...");
+  await client.guilds.fetch(DISCORD_GUILD_ID);
+  console.info("Populating guild roles cache...");
+  await client.guilds.resolve(DISCORD_GUILD_ID).roles.fetch();
+  console.info("Finished pre-populating caches.")
+}
+
 const main = async () => {
   initializeSpreadsheetClient();
   initializeCommands(client);
 
+  client.once("ready", initHandler);
   client.on("ready", readyHandler);
   client.on("interactionCreate", handler);
   client.login(TOKEN);
