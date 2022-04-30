@@ -1,7 +1,7 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 const { clanConfigs } = require("saren/pkg/config/config");
 
-const SHEET_TITLE = "Hit Coordinate"
+const SHEET_TITLE = "Hit Coordinate";
 
 // Note: Zero-indexed
 const COLUMN_HITTER_ID = 0;
@@ -42,6 +42,7 @@ const readSheet = async(clanName) => {
   doc.resetLocalCache();
   await doc.loadInfo();
 
+  console.log(doc.sheetsByTitle)
   const sheet = doc.sheetsByTitle[SHEET_TITLE];
   await sheet.loadCells(["A1:G34", "A37:A66"]);
 
