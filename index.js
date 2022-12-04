@@ -1,41 +1,42 @@
-const { Client, Intents } = require("discord.js");
+const { Client, GatewayIntentBits, ApplicationCommandOptionType } = require("discord.js");
 
 const { Semaphore } = require("./pkg/utils/semaphore");
-const { initializeSpreadsheetClient } = require("./pkg/sheets/sheets.js");
 const { initializeCommands } = require("./pkg/commands");
 
 const TOKEN = process.env.DISCORD_TOKEN;
 
 const throttler = new Semaphore(1);
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+  ],
+});
 
 const readyHandler = () => console.log(`Logged in as ${client.user.tag}!`);
 
 const handler = async (interaction) => {
-
   // Respond only to slashcommand and certain command names
-  if (!interaction.isCommand()) return;
-  if (
-    interaction.commandName !== "illya" &&
-    interaction.commandName !== "iam"
-  ) {
-    return;
+  if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName !== "illya") return;
+
+  // resolveCommandName resolves the command function from a given command name / string
+  const resolveCommandFunc = () => {
+    const subcommand = interaction.options.getSubcommand();
+    const subcommandGroup = interaction.options.getSubcommandGroup(false);
+    const commandName = [subcommandGroup, subcommand].join(" ").trim();
+
+    // Try to resolve the command function using just command name
+    fn = client.commands.get(commandName);
+    if (fn) return fn;
+
+    console.warn("Unknown command", subcommandName)
+    return false;
   }
 
-  // Try to resolve the command function using just command name
-  let commandFunc = client.commands.get(interaction.commandName);
-
-  // If not found, try with subcommand name
-  if (!commandFunc) {
-    const subcommandName = interaction.options.getSubcommand();
-    commandFunc = client.commands.get(subcommandName);
-  }
-
-  // If still not found, bail out
-  if (!commandFunc) {
-    console.warn("Unknown command", subcommand, interaction);
-    return;
-  }
+  // Resolve command
+  const commandFunc = resolveCommandFunc();
+  if (!commandFunc) return;
 
   // Tell discord that we ACKed
   await interaction.deferReply({ ephemeral: true });
@@ -47,7 +48,10 @@ const handler = async (interaction) => {
       if (!options) return "";
       const content = options.map(o => {
         // Recurse if subcommand
-        if (o.type == "SUB_COMMAND" || o.type == "SUB_COMMAND_GROUP") {
+        if (
+          o.type == ApplicationCommandOptionType.Subcommand ||
+          o.type == ApplicationCommandOptionType.SubcommandGroup
+        ) {
           const value = optionsToTextFn(o.options);
           return `${o.name}: ${value}`;
         }
@@ -79,7 +83,6 @@ const handler = async (interaction) => {
 };
 
 const main = async () => {
-  initializeSpreadsheetClient();
   initializeCommands(client);
 
   client.on("ready", readyHandler);

@@ -1,7 +1,6 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
-const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin, determineClanConfig } = require("saren/pkg/acl/acl.js");
-const { readSheet, writeSheet } = require("../../sheets/sheets.js");
+const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -31,40 +30,37 @@ const checkPermissions = async (interaction) => {
   }
 };
 
-const resetFunc = async (interaction) => {
+const subcommandFn = async (interaction) => {
   const { allowed, reason } = await checkPermissions(interaction);
   if (!allowed) return interaction.followUp({
     content: reason,
     ephemeral: true,
   });
 
-  // Resolve clan name
-  const config = determineClanConfig(interaction.member);
-
-  // Collect all info
-  const hitter = interaction.options.getUser("hitter");
-  const owner = interaction.options.getUser("account");
-
-  // Reset
-  const data = await readSheet(config.name);
-  data.entries = [];
-  data.avails = [];
-
-  // Write to sheet
-  await writeSheet(config.name, data);
+  console.log("TODO: Implement")
 
   // Send message
   interaction.followUp({
-    content: `Hit entries and availability list reset`,
+    content: `Not Implemented`,
     ephemeral: true,
   });
 }
 
-const resetSubCommand = new SlashCommandSubcommandBuilder()
-  .setName("reset")
-  .setDescription("Reset the entire hit entries and availability list")
+const subcommand = new SlashCommandSubcommandBuilder()
+  .setName("logout")
+  .setDescription("Logout on behalf of someone.")
+  .addUserOption(option =>
+    option
+    .setName("user")
+    .setDescription("The discord user you're logging out for.")
+    .setRequired(true))
+  .addUserOption(option =>
+    option
+    .setName("account")
+    .setDescription("The discord user whose pricon account was used. Assumes the same user if omitted.")
+    .setRequired(false))
 
 module.exports = {
-  resetFunc,
-  resetSubCommand,
+  subcommand,
+  subcommandFn,
 }

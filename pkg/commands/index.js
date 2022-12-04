@@ -1,35 +1,34 @@
 const { Collection } = require('discord.js');
 
-// illya
-const { canhitFunc } = require("./illya/canhit.js");
-// const { helpFunc } = require("./illya/help.js");
-const { removeFunc } = require("./illya/remove.js");
-const { resetFunc } = require("./illya/reset.js");
-const { statusFunc } = require("./illya/status.js");
-const { updateFunc } = require("./illya/update.js");
+const { command: rootCommand, commandFnMap: rootFnMap } = require("./general/index.js");
+const { command: superSubcommand, commandFnMap: superFnMap } = require("./super/index.js");
+const { command: accessSubcommand, commandFnMap: accessFnMap } = require("./access/index.js");
 
-// iam
-const { deadFunc } = require("./iam/dead.js");
-const { pausedFunc } = require("./iam/paused.js");
-const { resolvedFunc } = require("./iam/resolved.js");
-const { clashingFunc } = require("./iam/clashing.js");
+const command = rootCommand
+  .addSubcommandGroup(superSubcommand)
+  .addSubcommandGroup(accessSubcommand)
 
-
+// Functions
 const initializeCommands = client => {
   client.commands = new Collection();
-  client.commands.set("canhit", canhitFunc);
-  // client.commands.set("help", helpFunc);
-  client.commands.set("remove", removeFunc);
-  client.commands.set("reset", resetFunc);
-  client.commands.set("status", statusFunc);
-  client.commands.set("update", updateFunc);
 
-  client.commands.set("dead", deadFunc);
-  client.commands.set("paused", pausedFunc);
-  client.commands.set("resolved", resolvedFunc);
-  client.commands.set("clashing", clashingFunc);
+  // Consumes a fnMap and optionally a subcommand prefix
+  //   and registers it to the collection
+  const registerCommands = (fnMap, prefix) => {
+    for (const name in fnMap) {
+      const fn = fnMap[name];
+      const fullName = [prefix, name].join(" ").trim();
+
+      client.commands.set(fullName, fn);
+    }
+  }
+
+  registerCommands(rootFnMap, "");
+  registerCommands(superFnMap, "super");
+  registerCommands(accessFnMap, "access");
 }
 
 module.exports = {
+  command,
   initializeCommands,
 }
