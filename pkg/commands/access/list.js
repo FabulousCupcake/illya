@@ -1,6 +1,9 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
+const { SnowflakeUtil } = require("discord.js");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { vanillaLeadsRoleId, vanillaMembersRoleId, vanillaFriendsRoleId } = require("../../config/config.js");
+const { listPilots } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -30,6 +33,12 @@ const checkPermissions = async (interaction) => {
   }
 };
 
+const LEAD_EMOJI   = ":regional_indicator_l:";
+const MEMBER_EMOJI = ":regional_indicator_m:";
+const FRIEND_EMOJI = ":regional_indicator_f:";
+const SUS_EMOJI    = ":face_with_raised_eyebrow:";
+const EMPTY_EMOJI  = ":black_small_square:";
+
 const subcommandFn = async (interaction) => {
   const { allowed, reason } = await checkPermissions(interaction);
   if (!allowed) return interaction.followUp({
@@ -37,11 +46,44 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const pilotIds = await listPilots();
+
+  // Fetch members
+  if (!interaction.guild) await interaction.client.guilds.fetch({ guild: interaction.guildId, force: true });
+  const pilots = await interaction.guild.members.fetch({ force: true, user: pilotIds });
+  pilots.sort((a, b) => {
+    const _a = a.nickname || a.user.username;
+    const _b = b.nickname || b.user.username;
+    return _a.localeCompare(_b);
+  });
+
+  // Prep message
+  const message = [
+    "_**Role indicators:** `L`ead, `M`ember, `F`riend_",
+    ""
+  ];
+
+  // Build messages
+  let index = 0;
+  pilots.forEach(pilot => {
+    index += 1;
+
+    const isLeadEmoji = pilot.roles.cache.has(vanillaLeadsRoleId) ? LEAD_EMOJI : EMPTY_EMOJI;
+    const isMemberEmoji = pilot.roles.cache.has(vanillaMembersRoleId) ? MEMBER_EMOJI : EMPTY_EMOJI;
+    const isFriendEmoji = pilot.roles.cache.has(vanillaFriendsRoleId) ? FRIEND_EMOJI : EMPTY_EMOJI;
+    const isSusEmoji = (
+      isLeadEmoji === EMPTY_EMOJI &&
+      isMemberEmoji === EMPTY_EMOJI &&
+      isFriendEmoji === EMPTY_EMOJI
+    ) ? SUS_EMOJI : EMPTY_EMOJI;
+
+    const line = `\`${index}\`. ${isLeadEmoji}${isMemberEmoji}${isFriendEmoji}${isSusEmoji} <@!${pilot.id}>`;
+    message.push(line);
+  });
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: message.join("\n"),
     ephemeral: true,
   });
 }

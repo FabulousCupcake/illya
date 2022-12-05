@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { addPilot } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -37,11 +38,12 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const discordUserId = interaction.options.getUser("user").id;
+  await addPilot(discordUserId);
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: `Added <@!${discordUserId}> to pilot user list`,
     ephemeral: true,
   });
 }
