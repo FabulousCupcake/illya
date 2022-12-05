@@ -1,16 +1,17 @@
-const { Client, GatewayIntentBits, ApplicationCommandOptionType } = require("discord.js");
+const { Client, ApplicationCommandOptionType, IntentsBitField, GatewayIntentBits } = require("discord.js");
 
 const { Semaphore } = require("./pkg/utils/semaphore");
+const { initializeRedisClient } = require("./pkg/redis/redis.js")
 const { initializeCommands } = require("./pkg/commands");
 
 const TOKEN = process.env.DISCORD_TOKEN;
 
 const throttler = new Semaphore(1);
 const client = new Client({
-  intents: [
+  intents: new IntentsBitField([
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
-  ],
+  ]),
 });
 
 const readyHandler = () => console.log(`Logged in as ${client.user.tag}!`);
@@ -84,6 +85,7 @@ const handler = async (interaction) => {
 
 const main = async () => {
   initializeCommands(client);
+  initializeRedisClient();
 
   client.on("ready", readyHandler);
   client.on("interactionCreate", handler);
