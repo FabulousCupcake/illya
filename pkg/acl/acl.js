@@ -1,29 +1,5 @@
-const { clanConfigs, ownerDiscordId } = require("../config/config");
-
-// Returns the clan config of the respective clan
-// returns false instead if part of >1 clan
-const determineClanConfig = member => {
-    const configs = clanConfigs.filter(clan => {
-        return member.roles.cache.has(clan.memberRoleId);
-    });
-    console.debug(`acl: ${member.user.tag} is part of: ${configs.map(c => c.name)}`);
-
-    // If MonchoStrife#1504, hardcode return vanilla
-    const manchoId = "182305985589673984";
-    if (member.user.id == manchoId) {
-        console.debug(`Forcing clan to be Vanilla!`);
-        const clan = clanConfigs.find(clan => clan.name === "Vanilla");
-        return clan;
-    }
-
-    // In 0 clan, refuse
-    if (configs.length === 0) return false;
-
-    // In >1 clan, refuse
-    if (configs.length > 1) return false;
-
-    return configs[0];
-}
+const { ownerDiscordId, vanillaMembersRoleId, vanillaLeadsRoleId } = require("../config/config");
+const { isPilot } = require("../redis/redis");
 
 const isCalledByOwner = interaction => {
     if (interaction.user.id == ownerDiscordId) return true;
@@ -32,39 +8,18 @@ const isCalledByOwner = interaction => {
 }
 
 const isCalledByClanMember = interaction => {
-    const config = determineClanConfig(interaction.member);
-    if (!config) return false;
-
-    return interaction.member.roles.cache.has(config.memberRoleId);
+    return interaction.member.roles.cache.has(vanillaMembersRoleId);
 }
 
 const isCalledByClanAdmin = interaction => {
-    const config = determineClanConfig(interaction.member);
-    if (!config) return false;
-
-    return interaction.member.roles.cache.has(config.adminRoleId);
+    return interaction.member.roles.cache.has(vanillaLeadsRoleId);
 }
 
-// isInSameClan ensures caller and target are from the same clan
-// We do this in `checkPermission` of every commnand that needs it
-//   This guarantees that target uses the same config, so we don't need to check and fetch manually again
-//   Especially in places where we update sheet and need to obtain sheet id from config
-const isInSameClan = async (interaction) => {
-    const targetUser = interaction.options.getUser("target");
+const isCalledByPilot = async (interaction) => {
+    const id = interaction.user.id;
+    const isPilot = await isPilot(id);
 
-    // If target is unspecified return true
-    if (!targetUser) return true;
-
-    // User option does not provide role data, so we need to look it from guild members
-    if (!interaction.guild) await interaction.client.guilds.fetch(interaction.guildId);
-    const targetMember = await interaction.guild.members.fetch({ force: true, user: targetUser });
-
-
-    const callerConfig = determineClanConfig(interaction.member);
-    const targetConfig = determineClanConfig(targetMember);
-
-
-    return (callerConfig.name === targetConfig.name);
+    return isPilot;
 }
 
 const targetIsCaller = interaction => {
@@ -78,10 +33,9 @@ const targetIsCaller = interaction => {
 }
 
 module.exports = {
-    determineClanConfig,
     isCalledByOwner,
     isCalledByClanMember,
     isCalledByClanAdmin,
-    isInSameClan,
+    isCalledByPilot,
     targetIsCaller,
 }
