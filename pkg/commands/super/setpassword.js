@@ -37,11 +37,25 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const targetUser = interaction.options.getUser("target");
+  const password = interaction.options.getString("password");
+
+  // Drop if too long
+  if (password.length > 100) {
+    interaction.followUp({
+      content: "Too long. What are you trying to do?",
+      ephemeral: true,
+    });
+    console.warn("Input string too long");
+    return;
+  }
+
+  // Set password
+  await setPassword(targetUser.id, password);
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: `Password has been successfully stored for <@!${targetUser.id}>`,
     ephemeral: true,
   });
 }
@@ -52,12 +66,12 @@ const subcommand = new SlashCommandSubcommandBuilder()
   .addUserOption(option =>
     option
     .setName("user")
-    .setDescription("The discord user you're logging in for.")
+    .setDescription("The discord user you're setting the password for.")
     .setRequired(true))
-  .addUserOption(option =>
+  .addStringOption(option =>
     option
     .setName("password")
-    .setDescription("Your link account password")
+    .setDescription("The link account password")
     .setRequired(true))
 
 module.exports = {
