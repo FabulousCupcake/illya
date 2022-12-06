@@ -18,13 +18,6 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanAdmin(interaction)) {
-    return {
-      allowed: false,
-      reason: "You're not a clan lead!",
-    };
-  }
-
   return {
     allowed: true,
     reason: "You are not allowed to do this!"
@@ -50,7 +43,7 @@ const subcommandFn = async (interaction) => {
     return;
   }
 
-  // Set
+  // Set password
   await setPassword(interaction.member.id, password);
 
   // Send message
