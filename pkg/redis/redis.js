@@ -39,14 +39,14 @@ const initializeRedisClient = async () => {
   console.log("Successfully initialized Redis Client");
 }
 
-const setArmoryText = async (id, text) => {
-  const key = `armory-${id}`;
-  await redisClient.async.set(key, text);
+const setPassword = async (discordId, password) => {
+  const key = `password-${discordId}`;
+  await redisClient.async.set(key, password);
 }
 
-const getArmoryText = async (id) => {
-  const key = `armory-${id}`;
-  return await redisClient.async.get(key);
+const getPassword = async (discordId) => {
+  const key = `password-${discordId}`;
+  await redisClient.async.get(key);
 }
 
 const addPilot = async (discordId) => {
@@ -77,8 +77,8 @@ const getRedisClient = () => {
 module.exports = {
   initializeRedisClient,
   getRedisClient,
-  setArmoryText,
-  getArmoryText,
+  setPassword,
+  getPassword,
   addPilot,
   removePilot,
   isPilot,

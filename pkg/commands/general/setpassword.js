@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { setPassword } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -37,11 +38,24 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const password = interaction.options.getString("password");
+
+  // Drop if too long
+  if (password.length > 100) {
+    interaction.followUp({
+      content: "Too long. What are you trying to do?",
+      ephemeral: true,
+    });
+    console.warn("Input string too long");
+    return;
+  }
+
+  // Set
+  await setPassword(interaction.member.id, password);
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: "Password has been successfully stored.",
     ephemeral: true,
   });
 }
@@ -49,7 +63,7 @@ const subcommandFn = async (interaction) => {
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("setpassword")
   .setDescription("Stores your account link password to IllyaBot.")
-  .addUserOption(option =>
+  .addStringOption(option =>
     option
     .setName("password")
     .setDescription("Your link account password")
