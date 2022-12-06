@@ -48,7 +48,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message
   interaction.followUp({
-    content: "Password has been successfully stored.",
+    content: "Password has been successfully stored",
     ephemeral: true,
   });
 }
