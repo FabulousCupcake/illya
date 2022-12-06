@@ -35,6 +35,7 @@ const initializeRedisClient = async () => {
   redisClient.async.set = promisify(redisClient.set).bind(redisClient);
   redisClient.async.del = promisify(redisClient.del).bind(redisClient);
   redisClient.async.keys = promisify(redisClient.keys).bind(redisClient);
+  redisClient.async.setnx = promisify(redisClient.setnx).bind(redisClient);
 
   console.log("Successfully initialized Redis Client");
 }
@@ -47,6 +48,44 @@ const setPassword = async (discordId, password) => {
 const getPassword = async (discordId) => {
   const key = `password-${discordId}`;
   await redisClient.async.get(key);
+}
+
+const addLoginMutex = async (accountDiscordId, pilotDiscordId) => {
+  const key = `login-${accountDiscordId}:pilot`;
+
+  // Try to set
+  const status = await redisClient.async.setnx(key, pilotDiscordId);
+  if (!status) return false;
+
+  // Set timestamp
+  const timeKey = `login-${accountDiscordId}:time`;
+  const timestamp = new Date().getTime();
+  await redisClient.async.setnx(timeKey, timestamp);
+}
+
+const removeLoginMutex = async (accountDiscordId) => {
+  const key = `login-${accountDiscordId}:pilot`;
+  const timeKey = `login-${accountDiscordId}:time`;
+
+  await redisClient.async.del(key);
+  await redisClient.async.del(timeKey);
+}
+
+const listLoginMutexes = async () => {
+  const keys = await redisClient.async.keys("login-*:pilot");
+  const result = [];
+
+  for (const key of keys) {
+    const accountDiscordId = key.match(/\-([0-9]+):/)[1];
+    const timeKey = `login-${accountDiscordId}:time`;
+
+    const pilot = await redisClient.async.get(key);
+    const timestamp = await redisClient.async.get(timeKey);
+
+    result.push({ account: accountDiscordId, pilot, timestamp });
+  }
+
+  return result;
 }
 
 const addPilot = async (discordId) => {
@@ -77,8 +116,14 @@ const getRedisClient = () => {
 module.exports = {
   initializeRedisClient,
   getRedisClient,
+
   setPassword,
   getPassword,
+
+  addLoginMutex,
+  removeLoginMutex,
+  listLoginMutexes,
+
   addPilot,
   removePilot,
   isPilot,
