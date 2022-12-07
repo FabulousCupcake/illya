@@ -17,13 +17,11 @@ const isCalledByClanAdmin = interaction => {
 
 const isCalledByPilot = async (interaction) => {
     const id = interaction.user.id;
-    const isPilot = await isPilot(id);
-
-    return isPilot;
+    return await isPilot(id);
 }
 
-const targetIsCaller = interaction => {
-    const targetUser = interaction.options.getUser("target");
+const targetIsCaller = (interaction, argumentName) => {
+    const targetUser = interaction.options.getUser(argumentName);
 
     // If target is unspecified, allow it — it probably assumes target is caller.
     if (!targetUser) return true;
