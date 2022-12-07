@@ -72,6 +72,12 @@ const subcommandFn = async (interaction) => {
     content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
     ephemeral: true,
   });
+
+  // Send message/announce
+  interaction.reply({
+    message: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    ephemeral: false,
+  });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()

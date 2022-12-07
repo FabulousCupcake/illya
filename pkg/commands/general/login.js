@@ -74,10 +74,16 @@ const subcommandFn = async (interaction) => {
     `||\`${password}\`||` :
     "No password set!";
 
-  // Send message
+  // Send password
   interaction.followUp({
     content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
     ephemeral: true,
+  });
+
+  // Send message/announce
+  interaction.reply({
+    message: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    ephemeral: false,
   });
 }
 

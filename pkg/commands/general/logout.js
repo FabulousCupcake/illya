@@ -66,6 +66,12 @@ const subcommandFn = async (interaction) => {
     content: message,
     ephemeral: true,
   });
+
+  // Send message/announce
+  interaction.reply({
+    message: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
+    ephemeral: false,
+  });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()
