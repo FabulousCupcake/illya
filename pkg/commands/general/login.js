@@ -82,7 +82,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message/announce
   await interaction.followUp({
-    message: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    content: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
     ephemeral: false,
   });
 }
