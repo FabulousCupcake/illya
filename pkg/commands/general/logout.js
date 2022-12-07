@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
-const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin, targetIsCaller } = require("../../acl/acl.js");
+const { checkLoginMutex, removeLoginMutex } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -10,22 +11,22 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanMember(interaction)) {
+  if (await isCalledByPilot(interaction)) {
     return {
-      allowed: false,
-      reason: "Unable to determine which clan you belong to!",
-    };
+      allowed: true,
+      reason: "Caller is in pilot user list"
+    }
   }
 
-  if (!isCalledByClanAdmin(interaction)) {
+  if (targetIsCaller(interaction, "account")) {
     return {
-      allowed: false,
-      reason: "You're not a clan lead!",
+        allowed: true,
+        reason: "Caller is the target / account owner",
     };
   }
 
   return {
-    allowed: true,
+    allowed: false,
     reason: "You are not allowed to do this!"
   }
 };
@@ -37,11 +38,32 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const accountDiscordId = interaction.options.getUser("account")?.id || interaction.member.user.id;
+  const callerDiscordId = interaction.member.user.id;
+
+  // Drop if the caller is not the pilot logged in
+  const { pilot: pilotDiscordId } = await checkLoginMutex(accountDiscordId);
+  if (callerDiscordId != pilotDiscordId) {
+    interaction.followUp({
+      content: `Failed to logout! You're not logged in on <@!${accountDiscordId}>!`,
+      ephemeral: true,
+    });
+    console.warn("Failed logout");
+    return;
+  }
+
+  // Remove mutex claim
+  await removeLoginMutex(accountDiscordId);
+
+  // Build message
+  const message = [
+    `Successfully logged out from <@!${accountDiscordId}>`,
+    `_Don't forget to actually logout from the game!_`
+  ].join("\n");
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: message,
     ephemeral: true,
   });
 }

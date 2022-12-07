@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { listLoginMutexes } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -10,22 +11,22 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanMember(interaction)) {
+  if (isCalledByClanMember(interaction)) {
     return {
-      allowed: false,
-      reason: "Unable to determine which clan you belong to!",
+      allowed: true,
+      reason: "Caller is a clan member",
     };
   }
 
-  if (!isCalledByClanAdmin(interaction)) {
+  if (await isCalledByPilot(interaction)) {
     return {
-      allowed: false,
-      reason: "You're not a clan lead!",
-    };
+      allowed: true,
+      reason: "Caller is in pilot user list"
+    }
   }
 
   return {
-    allowed: true,
+    allowed: false,
     reason: "You are not allowed to do this!"
   }
 };
@@ -37,11 +38,30 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  // Obtain all existing mutex claims
+  const mutexes = await listLoginMutexes();
+  mutexes.sort((a, b) => a.timestamp > b.timestamp);
+
+  // Build message
+  let index = 0;
+  const message = mutexes.map(m => {
+    index += 1;
+
+    return `\`${index}\`. <@!${m.account}> claimed by <@!${m.pilot}> <t:${m.timestamp}:R>`;
+  }).join("\n");
+
+  // No one claimed
+  if (!message) {
+    interaction.followUp({
+      content: "No one is logged in on anyone!",
+      ephemeral: true,
+    });
+    return;
+  }
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: message,
     ephemeral: true,
   });
 }
