@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { setPassword } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -10,7 +11,7 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanAdmin(interaction)) {
+  if (isCalledByClanAdmin(interaction)) {
     return {
       allowed: true,
       reason: "Caller is clan lead",

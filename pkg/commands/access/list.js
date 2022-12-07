@@ -1,5 +1,4 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
-const { SnowflakeUtil } = require("discord.js");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
 const { vanillaLeadsRoleId, vanillaMembersRoleId, vanillaFriendsRoleId } = require("../../config/config.js");

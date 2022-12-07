@@ -1,6 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { checkLoginMutex, removeLoginMutex } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
