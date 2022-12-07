@@ -10,22 +10,15 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanMember(interaction)) {
-    return {
-      allowed: false,
-      reason: "Unable to determine which clan you belong to!",
-    };
-  }
-
   if (!isCalledByClanAdmin(interaction)) {
     return {
-      allowed: false,
-      reason: "You're not a clan lead!",
+      allowed: true,
+      reason: "Caller is clan lead",
     };
   }
 
   return {
-    allowed: true,
+    allowed: false,
     reason: "You are not allowed to do this!"
   }
 };
@@ -37,7 +30,6 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  const targetUser = interaction.options.getUser("target");
   const password = interaction.options.getString("password");
 
   // Drop if too long
@@ -51,22 +43,23 @@ const subcommandFn = async (interaction) => {
   }
 
   // Set password
-  await setPassword(targetUser.id, password);
+  const userId = interactions.options.getUser("user").id;
+  await setPassword(userId, password);
 
   // Send message
   interaction.followUp({
-    content: `Password has been successfully stored for <@!${targetUser.id}>`,
+    content: "Password has been successfully stored",
     ephemeral: true,
   });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("setpassword")
-  .setDescription("Stores account link password to IllyaBot on behalf of someone.")
+  .setDescription("Stores account link password to IllyaBot on behalf of someone")
   .addUserOption(option =>
     option
     .setName("user")
-    .setDescription("The discord user you're setting the password for.")
+    .setDescription("The discord user you're setting the password for")
     .setRequired(true))
   .addStringOption(option =>
     option

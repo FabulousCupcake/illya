@@ -10,22 +10,15 @@ const checkPermissions = async (interaction) => {
     };
   }
 
-  if (!isCalledByClanMember(interaction)) {
+  if (isCalledByClanAdmin(interaction)) {
     return {
-      allowed: false,
-      reason: "Unable to determine which clan you belong to!",
-    };
-  }
-
-  if (!isCalledByClanAdmin(interaction)) {
-    return {
-      allowed: false,
-      reason: "You're not a clan lead!",
+      allowed: true,
+      reason: "Caller is clan lead",
     };
   }
 
   return {
-    allowed: true,
+    allowed: false,
     reason: "You are not allowed to do this!"
   }
 };
@@ -37,11 +30,44 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  console.log("TODO: Implement")
+  const accountDiscordId = interaction.options.getUser("account")?.id || interaction.options.getUser("user").id;
+  const pilotDiscordId = interaction.options.getUser("user").id;
+
+  // Fetch clanmembers list
+  if (!interaction.guild) await interaction.client.guilds.fetch(interaction.guildId);
+  const allMembers = await interaction.guild.members.fetch();
+  const clanMembers = allMembers.filter(m => m.roles.cache.has(vanillaMembersRoleId));
+
+  // Abort if target is not clan member
+  if (!clanMembers.find(m => m.id === accountDiscordId)) {
+    interaction.followUp({
+      content: `<@!${accountDiscordId}> is not a Vanilla clan member! Aborting!`,
+      ephemeral: true,
+    });
+    console.warn("Failed login. Attempt to login into non-clan member");
+    return;
+  }
+
+  // Try claim login mutex
+  const result = await addLoginMutex(accountDiscordId, pilotDiscordId);
+  if (!result) {
+    interaction.followUp({
+      content: `Someone is already logged into <@!${accountDiscordId}>'s account!`,
+      ephemeral: true,
+    });
+    console.warn("Failed login. Mutex claim fail");
+    return;
+  }
+
+  // Retrieve password
+  const password = await getPassword(accountDiscordId);
+  const passwordText = (password) ?
+    `||\`${password}\`||` :
+    "No password set!";
 
   // Send message
   interaction.followUp({
-    content: `Not Implemented`,
+    content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
     ephemeral: true,
   });
 }
@@ -52,12 +78,12 @@ const subcommand = new SlashCommandSubcommandBuilder()
   .addUserOption(option =>
     option
     .setName("user")
-    .setDescription("The discord user you're logging in for.")
+    .setDescription("The discord user you're logging in for / the pilot")
     .setRequired(true))
   .addUserOption(option =>
     option
     .setName("account")
-    .setDescription("The discord user whose pricon account will be used. Assumes the same user if omitted.")
+    .setDescription("The discord user whose pricon account will be used. Assumes the same user if omitted")
     .setRequired(false))
 
 module.exports = {
