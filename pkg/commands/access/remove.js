@@ -50,7 +50,7 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("remove")
-  .setDescription("Removes a discord user from pilot list, removing their access to all the link passwords.")
+  .setDescription("Removes a discord user from pilot list, removing their access to all the link passwords")
   .addUserOption(option =>
     option
     .setName("user")

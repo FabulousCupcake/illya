@@ -50,7 +50,7 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("add")
-  .setDescription("Adds a discord user to pilot list, granting them access to all the link passwords.")
+  .setDescription("Adds a discord user to pilot list, granting them access to all the link passwords")
   .addUserOption(option =>
     option
     .setName("user")

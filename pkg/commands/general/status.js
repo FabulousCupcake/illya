@@ -68,7 +68,7 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("status")
-  .setDescription("Displays the current pilot statuses of who's on whomst.")
+  .setDescription("Displays the current pilot statuses of who's on whomst")
 
 module.exports = {
   subcommand,

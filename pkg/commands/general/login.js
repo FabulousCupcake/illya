@@ -83,11 +83,11 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("login")
-  .setDescription("Log in on someone and obtain their link password.")
+  .setDescription("Log in on someone and obtain their link password")
   .addUserOption(option =>
     option
     .setName("account")
-    .setDescription("The discord user whose account is to be used. Uses yours if omitted.")
+    .setDescription("The discord user whose account is to be used. Uses yours if omitted")
     .setRequired(false))
 
 module.exports = {

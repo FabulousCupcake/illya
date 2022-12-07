@@ -70,11 +70,11 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("logout")
-  .setDescription("Log out on someone.")
+  .setDescription("Log out on someone")
   .addUserOption(option =>
     option
     .setName("account")
-    .setDescription("The discord user whose account was used. Uses yours if omitted.")
+    .setDescription("The discord user whose account was used. Uses yours if omitted")
     .setRequired(false))
 
 module.exports = {

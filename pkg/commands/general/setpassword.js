@@ -48,14 +48,14 @@ const subcommandFn = async (interaction) => {
 
   // Send message
   interaction.followUp({
-    content: "Password has been successfully stored",
+    content: "The password has been successfully saved",
     ephemeral: true,
   });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("setpassword")
-  .setDescription("Stores your account link password to IllyaBot.")
+  .setDescription("Stores your account link password to IllyaBot")
   .addStringOption(option =>
     option
     .setName("password")

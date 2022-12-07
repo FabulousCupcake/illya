@@ -90,7 +90,7 @@ const subcommandFn = async (interaction) => {
 
 const subcommand = new SlashCommandSubcommandBuilder()
   .setName("list")
-  .setDescription("Displays the list of users who have access to the account link passwords.")
+  .setDescription("Displays the list of users who have access to the account link passwords")
 
 module.exports = {
   subcommand,
