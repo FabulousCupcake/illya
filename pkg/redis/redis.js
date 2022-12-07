@@ -47,7 +47,7 @@ const setPassword = async (discordId, password) => {
 
 const getPassword = async (discordId) => {
   const key = `password-${discordId}`;
-  await redisClient.async.get(key);
+  return await redisClient.async.get(key);
 }
 
 const addLoginMutex = async (accountDiscordId, pilotDiscordId) => {
@@ -59,8 +59,21 @@ const addLoginMutex = async (accountDiscordId, pilotDiscordId) => {
 
   // Set timestamp
   const timeKey = `login-${accountDiscordId}:time`;
-  const timestamp = new Date().getTime();
+  const timestamp = Math.round(new Date().getTime() / 1000);
   await redisClient.async.setnx(timeKey, timestamp);
+  return true;
+}
+
+const checkLoginMutex = async (accountDiscordId) => {
+  const key = `login-${accountDiscordId}:pilot`;
+  const timeKey = `login-${accountDiscordId}:time`;
+
+  const pilot = await redisClient.async.get(key);
+  const timestamp = await redisClient.async.get(timeKey);
+
+  if (!pilot) return false;
+
+  return { pilot, timestamp };
 }
 
 const removeLoginMutex = async (accountDiscordId) => {
@@ -121,6 +134,7 @@ module.exports = {
   getPassword,
 
   addLoginMutex,
+  checkLoginMutex,
   removeLoginMutex,
   listLoginMutexes,
 
