@@ -62,13 +62,13 @@ const subcommandFn = async (interaction) => {
   ].join("\n");
 
   // Send message
-  interaction.followUp({
+  await interaction.followUp({
     content: message,
     ephemeral: true,
   });
 
   // Send message/announce
-  interaction.followUp({
+  await interaction.followUp({
     message: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
     ephemeral: false,
   });
