@@ -61,7 +61,7 @@ const subcommandFn = async (interaction) => {
   });
 
   // Send message/announce
-  interaction.reply({
+  interaction.followUp({
     message: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
     ephemeral: false,
   });
