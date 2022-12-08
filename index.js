@@ -28,10 +28,10 @@ const handler = async (interaction) => {
     const commandName = [subcommandGroup, subcommand].join(" ").trim();
 
     // Try to resolve the command function using just command name
-    fn = client.commands.get(commandName);
+    const fn = client.commands.get(commandName);
     if (fn) return fn;
 
-    console.warn("Unknown command", subcommandName)
+    console.warn("Unknown command", commandName)
     return false;
   }
 
