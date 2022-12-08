@@ -48,18 +48,6 @@ const subcommandFn = async (interaction) => {
   // Remove mutex claim
   await removeLoginMutex(accountDiscordId);
 
-  // Build message
-  const message = [
-    `Successfully logged out from <@!${accountDiscordId}>`,
-    `_Don't forget to actually logout from the game!_`
-  ].join("\n");
-
-  // Send message
-  await interaction.followUp({
-    content: message,
-    ephemeral: true,
-  });
-
   // Send message/announce
   await interaction.followUp({
     content: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
