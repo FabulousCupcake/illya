@@ -40,7 +40,7 @@ const handler = async (interaction) => {
   if (!commandFunc) return;
 
   // Tell discord that we ACKed
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   // Log it
   (function() {
