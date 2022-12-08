@@ -33,8 +33,8 @@ const checkPermissions = async (interaction) => {
 };
 
 const LEAD_EMOJI   = "🇱 ";
-const MEMBER_EMOJI = "🇲";
-const FRIEND_EMOJI = "🇫";
+const MEMBER_EMOJI = "🇲 ";
+const FRIEND_EMOJI = "🇫 ";
 const SUS_EMOJI    = "🤨";
 const EMPTY_EMOJI  = "▪️";
 
