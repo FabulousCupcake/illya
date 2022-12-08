@@ -55,11 +55,14 @@ const subcommandFn = async (interaction) => {
   // Remove mutex claim
   await removeLoginMutex(accountDiscordId);
 
+  // There is no followup
+  await interaction.deleteReply();
+
   // Send message/announce
-  await interaction.followUp({
+  await interaction.channel.send({
     content: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
-    ephemeral: false,
   });
+
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()
