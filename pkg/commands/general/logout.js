@@ -60,8 +60,11 @@ const subcommandFn = async (interaction) => {
     content: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
   });
 
-  // There is no followup
-  await interaction.deleteReply();
+  // Simple followup
+  await interaction.followUp({
+    content: "Successfully logged out!",
+    ephemeral: true,
+  });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()

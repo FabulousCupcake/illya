@@ -54,8 +54,11 @@ const subcommandFn = async (interaction) => {
     ephemeral: false,
   });
 
-  // There is no followup
-  await interaction.deleteReply();
+  // Simple followup
+  await interaction.followUp({
+    content: "Successfully logged out!",
+    ephemeral: true,
+  });
 }
 
 const subcommand = new SlashCommandSubcommandBuilder()
