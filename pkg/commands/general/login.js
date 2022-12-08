@@ -74,15 +74,15 @@ const subcommandFn = async (interaction) => {
     `||\`${password}\`||` :
     "No password set!";
 
+  // Send message/announce
+  await interaction.channel.send({
+    content: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+  });
+
   // Send password
   await interaction.followUp({
     content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
     ephemeral: true,
-  });
-
-  // Send message/announce
-  await interaction.channel.send({
-    content: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
   });
 }
 
