@@ -44,7 +44,7 @@ const subcommandFn = async (interaction) => {
   }
 
   // Set password
-  const userId = interactions.options.getUser("user").id;
+  const userId = interaction.options.getUser("user").id;
   await setPassword(userId, password);
 
   // Send message

@@ -89,7 +89,7 @@ const listLoginMutexes = async () => {
   const result = [];
 
   for (const key of keys) {
-    const accountDiscordId = key.match(/\-([0-9]+):/)[1];
+    const accountDiscordId = key.match(/-([0-9]+):/)[1];
     const timeKey = `login-${accountDiscordId}:time`;
 
     const pilot = await redisClient.async.get(key);
