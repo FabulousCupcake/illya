@@ -1,6 +1,6 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
-const { isCalledByOwner, isCalledByClanMember, isCalledByClanAdmin } = require("../../acl/acl.js");
+const { isCalledByOwner, isCalledByClanAdmin } = require("../../acl/acl.js");
 const { vanillaMembersRoleId } = require("../../config/config.js");
 const { addLoginMutex, getPassword } = require("../../redis/redis.js");
 
