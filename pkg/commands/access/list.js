@@ -32,11 +32,11 @@ const checkPermissions = async (interaction) => {
   }
 };
 
-const LEAD_EMOJI   = ":regional_indicator_l:";
-const MEMBER_EMOJI = ":regional_indicator_m:";
-const FRIEND_EMOJI = ":regional_indicator_f:";
-const SUS_EMOJI    = ":face_with_raised_eyebrow:";
-const EMPTY_EMOJI  = ":black_small_square:";
+const LEAD_EMOJI   = "🇱 ";
+const MEMBER_EMOJI = "🇲";
+const FRIEND_EMOJI = "🇫";
+const SUS_EMOJI    = "🤨";
+const EMPTY_EMOJI  = "▪️";
 
 const subcommandFn = async (interaction) => {
   const { allowed, reason } = await checkPermissions(interaction);
