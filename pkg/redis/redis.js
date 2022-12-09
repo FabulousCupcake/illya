@@ -50,6 +50,16 @@ const getPassword = async (discordId) => {
   return await redisClient.async.get(key);
 }
 
+const setGameAccountId = async (discordId, gameAccountId) => {
+  const key = `gameAccountId-${discordId}`;
+  await redisClient.async.set(key, gameAccountId);
+}
+
+const getGameAccountId = async (discordId) => {
+  const key = `gameAccountId-${discordId}`;
+  return await redisClient.async.get(key);
+}
+
 const addLoginMutex = async (accountDiscordId, pilotDiscordId) => {
   const key = `login-${accountDiscordId}:pilot`;
 
@@ -132,6 +142,8 @@ module.exports = {
 
   setPassword,
   getPassword,
+  setGameAccountId,
+  getGameAccountId,
 
   addLoginMutex,
   checkLoginMutex,
