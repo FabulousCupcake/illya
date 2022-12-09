@@ -41,7 +41,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message
   interaction.followUp({
-    content: `Your ingame account id \`${gameAccountId}\` has been successfully saved`,
+    content: `The ingame account id \`${gameAccountId}\` for <@!${userId}> has been successfully saved`,
     ephemeral: true,
   });
 }
