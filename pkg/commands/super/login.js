@@ -61,6 +61,12 @@ const subcommandFn = async (interaction) => {
     return;
   }
 
+  // Retrieve userid
+  const gameAccountId = await getGameAccountId(accountDiscordId);
+  const gameAccountIdText = (gameAccountId) ?
+    `\`${gameAccountId}\`` :
+    `No game account id set.`;
+
   // Retrieve password
   const password = await getPassword(accountDiscordId);
   const passwordText = (password) ?
@@ -74,7 +80,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message
   await interaction.followUp({
-    content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
+    content: `Account Link Password for <@!${accountDiscordId}>: ${gameAccountIdText} / ${passwordText}`,
     ephemeral: true,
   });
 }

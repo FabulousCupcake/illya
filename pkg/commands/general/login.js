@@ -2,7 +2,7 @@ const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByPilot, targetIsCaller } = require("../../acl/acl.js");
 const { vanillaMembersRoleId } = require("../../config/config.js");
-const { addLoginMutex, getPassword } = require("../../redis/redis.js");
+const { addLoginMutex, getPassword, getGameAccountId } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -68,6 +68,12 @@ const subcommandFn = async (interaction) => {
     return;
   }
 
+  // Retrieve userid
+  const gameAccountId = await getGameAccountId(accountDiscordId);
+  const gameAccountIdText = (gameAccountId) ?
+    `\`${gameAccountId}\`` :
+    `No game account id set.`;
+
   // Retrieve password
   const password = await getPassword(accountDiscordId);
   const passwordText = (password) ?
@@ -81,7 +87,7 @@ const subcommandFn = async (interaction) => {
 
   // Send password
   await interaction.followUp({
-    content: `Account Link Password for <@!${accountDiscordId}>: ${passwordText}`,
+    content: `Account Credentials for <@!${accountDiscordId}>: ${gameAccountIdText} / ${passwordText}`,
     ephemeral: true,
   });
 }
