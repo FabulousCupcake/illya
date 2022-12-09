@@ -17,21 +17,24 @@ const client = new Client({
 const readyHandler = () => console.log(`Logged in as ${client.user.tag}!`);
 
 const handler = async (interaction) => {
+  const recognizedCommandsList = ["illya", "i", "il", "io"];
+
   // Respond only to slashcommand and certain command names
   if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName !== "illya") return;
+  if (!recognizedCommandsList.contains(interaction.commandName)) return;
 
   // resolveCommandName resolves the command function from a given command name / string
   const resolveCommandFunc = () => {
+    const command = interaction.commandName;
     const subcommand = interaction.options.getSubcommand();
     const subcommandGroup = interaction.options.getSubcommandGroup(false);
-    const commandName = [subcommandGroup, subcommand].join(" ").trim();
+    const fullCommandName = [command, subcommandGroup, subcommand].join(" ").trim();
 
     // Try to resolve the command function using just command name
-    const fn = client.commands.get(commandName);
+    const fn = client.commands.get(fullCommandName);
     if (fn) return fn;
 
-    console.warn("Unknown command", commandName)
+    console.warn("Unknown command", fullCommandName)
     return false;
   }
 

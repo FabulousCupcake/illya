@@ -6,11 +6,6 @@ const { subcommand: setpassword, subcommandFn: setpasswordFn } = require("./setp
 const { subcommand: setaccountid, subcommandFn: setaccountidFn } = require("./setaccountid.js");
 const { subcommand: status, subcommandFn: statusFn } = require("./status.js");
 
-// Aliases
-const aliasedLoginSubcommand = structuredClone(login).setName("il")
-const aliasedLogoutSubcommand = structuredClone(logout).setName("io")
-const aliasedStatusSubcommand = structuredClone(status).setName("i")
-
 const command = new SlashCommandBuilder()
   .setName("illya")
   .setDescription("A Clan Battle Coordination Bot")
@@ -19,9 +14,18 @@ const command = new SlashCommandBuilder()
   .addSubcommand(setpassword)
   .addSubcommand(setaccountid)
   .addSubcommand(status)
-  .addSubcommand(aliasedLoginSubcommand)
-  .addSubcommand(aliasedLogoutSubcommand)
-  .addSubcommand(aliasedStatusSubcommand)
+
+// Aliases
+const buildAliasCommand = (name, subcommand) => {
+  const cmd = new SlashCommandBuilder(name);
+  cmd.description = subcommand.description;
+  cmd.options = subcommand.options;
+
+  return cmd
+}
+const loginAliasCommand = buildAliasCommand("il", login);
+const logoutAliasCommand = buildAliasCommand("io", logout);
+const statusAliasCommand = buildAliasCommand("i", status);
 
 const commandFnMap = {
   "login": loginFn,
@@ -29,13 +33,19 @@ const commandFnMap = {
   "setpassword": setpasswordFn,
   "setaccountid": setaccountidFn,
   "status": statusFn,
-  // Aliases
-  "il": loginFn,
-  "io": logoutFn,
-  "i": statusFn,
 }
+
+const loginCommandFn = loginFn;
+const logoutCommandFn = logoutFn;
+const statusCommandFn = statusFn;
 
 module.exports = {
   command,
   commandFnMap,
+  loginAliasCommand,
+  logoutAliasCommand,
+  statusAliasCommand,
+  loginCommandFn,
+  logoutCommandFn,
+  statusCommandFn,
 }
