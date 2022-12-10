@@ -62,7 +62,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message/announce
   await interaction.channel.send({
-    content: `${loginMutexCountText} ⚫ <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
+    content: `${loginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`,
   });
 
   // Simple followup

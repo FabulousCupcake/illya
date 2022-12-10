@@ -81,7 +81,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message/announce
   await interaction.channel.send({
-    content: `${loginMutexCountText} 🟠 <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    content: `${loginMutexCountText} 🟠 <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`,
   });
 
   // Send message
