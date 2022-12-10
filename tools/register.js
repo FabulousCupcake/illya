@@ -1,5 +1,6 @@
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v10");
+const { loginAliasCommand, logoutAliasCommand, statusAliasCommand } = require("../pkg/commands/general/index.js");
 
 const { command } = require("../pkg/commands/index.js");
 
@@ -14,7 +15,10 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 // registerCommands registers command json and returns command id
 const registerCommands = async () => {
   const payload = [
-    command.toJSON()
+    command.toJSON(),
+    loginAliasCommand.toJSON(),
+    logoutAliasCommand.toJSON(),
+    statusAliasCommand.toJSON(),
   ];
 
   console.log("==> Command JSON:");
