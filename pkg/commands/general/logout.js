@@ -58,11 +58,11 @@ const subcommandFn = async (interaction) => {
 
   // Retrieve mutex count
   const loginMutexCount = await listLoginMutexes().length;
-  const loginMutextCountText = numberToEmoji(loginMutexCount);
+  const loginMutexCountText = numberToEmoji(loginMutexCount);
 
   // Send message/announce
   await interaction.channel.send({
-    content: `${loginMutextCountText} ⚫ <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
+    content: `${loginMutexCountText} ⚫ <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
   });
 
   // Simple followup

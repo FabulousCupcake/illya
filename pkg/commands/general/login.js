@@ -72,7 +72,7 @@ const subcommandFn = async (interaction) => {
   // Build message
   // 1. Retrieve mutex count
   const loginMutexCount = await listLoginMutexes().length;
-  const loginMutextCountText = numberToEmoji(loginMutexCount);
+  const loginMutexCountText = numberToEmoji(loginMutexCount);
 
   // 2. Retrieve userid
   const gameAccountId = await getGameAccountId(accountDiscordId);
@@ -88,7 +88,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message/announce
   await interaction.channel.send({
-    content: `${loginMutextCountText} 🟠 <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    content: `${loginMutexCountText} 🟠 <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
   });
 
   // Send password
