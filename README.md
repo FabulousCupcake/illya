@@ -19,15 +19,15 @@
 - ✅ `/illya setpassword <string>`
   Sets link password for said user
 
-- ⏳ `/illya setuid <string>`
+- ✅ `/illya setaccountid <string>`
   Sets the 9-digit ingame account id for said user
 
-- ⏳ `/illya login [account: <user>]`
+- ✅ `/illya login [account: <user>]`
   ✅ Notifies bot that <sender> is logging into <user>; self if omitted
   ✅ Records the timestamp
   ✅ Refuses if someone is already logged into said account.
   ✅ Displays the link password in spoiler, autodeletes (via edit) in 60s
-  ⏳ Displays the account id for ease of copypaste
+  ✅ Displays the account id for ease of copypaste
 
 - ✅ `/illya logout [account: <user>]`
   Notifies bot that <sender> logs out from <user>; self if omitted
@@ -39,10 +39,10 @@
 - ✅ `/illya super login <user> [account: <user>]`
 - ✅ `/illya super logout <user> [account: <user>]`
 - ✅ `/illya super setpassword <user> <string>`
-- ⏳ `/illya super setuid <user> <string>`
+- ✅ `/illya super setaccountid <user> <string>`
   Do action on behalf of someone, intended for leads to use on unresponsive persons
 
 ## Command aliases
-- ⏳ `/i` for `/illya status`
-- ⏳ `/ii` for `/illya login`
-- ⏳ `/io` for `/illya logout`
+- ✅ `/ii` for `/illya status`
+- ✅ `/il` for `/illya login`
+- ✅ `/io` for `/illya logout`
