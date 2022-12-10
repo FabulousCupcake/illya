@@ -71,7 +71,7 @@ const subcommandFn = async (interaction) => {
 
   // Build message
   // 1. Retrieve mutex count
-  const loginMutexCount = await listLoginMutexes().length;
+  const loginMutexCount = (await listLoginMutexes()).length;
   const loginMutexCountText = numberToEmoji(loginMutexCount);
 
   // 2. Retrieve userid

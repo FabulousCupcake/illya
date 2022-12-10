@@ -57,7 +57,7 @@ const subcommandFn = async (interaction) => {
   await removeLoginMutex(accountDiscordId);
 
   // Retrieve mutex count
-  const loginMutexCount = await listLoginMutexes().length;
+  const loginMutexCount = (await listLoginMutexes()).length;
   const loginMutexCountText = numberToEmoji(loginMutexCount);
 
   // Send message/announce
