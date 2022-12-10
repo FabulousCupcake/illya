@@ -21,7 +21,7 @@ const handler = async (interaction) => {
 
   // Respond only to slashcommand and certain command names
   if (!interaction.isChatInputCommand()) return;
-  if (!recognizedCommandsList.contains(interaction.commandName)) return;
+  if (!recognizedCommandsList.includes(interaction.commandName)) return;
 
   // resolveCommandName resolves the command function from a given command name / string
   const resolveCommandFunc = () => {
