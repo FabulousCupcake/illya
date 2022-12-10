@@ -1,4 +1,4 @@
-const { ownerDiscordId, vanillaMembersRoleId, vanillaLeadsRoleId } = require("../config/config");
+const { ownerDiscordId, vanillaMembersRoleId, leadsDiscordIds } = require("../config/config");
 const { isPilot } = require("../redis/redis");
 
 const isCalledByOwner = interaction => {
@@ -11,8 +11,9 @@ const isCalledByClanMember = interaction => {
     return interaction.member.roles.cache.has(vanillaMembersRoleId);
 }
 
+// Use hardcoded user ID list here not leads role!
 const isCalledByClanAdmin = interaction => {
-    return interaction.member.roles.cache.has(vanillaLeadsRoleId);
+    return leadsDiscordIds.includes(interaction.user.id);
 }
 
 const isCalledByPilot = async (interaction) => {
