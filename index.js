@@ -26,7 +26,7 @@ const handler = async (interaction) => {
   // resolveCommandName resolves the command function from a given command name / string
   const resolveCommandFunc = () => {
     const command = interaction.commandName;
-    const subcommand = interaction.options.getSubcommand();
+    const subcommand = interaction.options.getSubcommand(false);
     const subcommandGroup = interaction.options.getSubcommandGroup(false);
     const fullCommandName = [command, subcommandGroup, subcommand].join(" ").trim();
 
