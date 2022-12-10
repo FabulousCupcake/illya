@@ -2,7 +2,8 @@ const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanAdmin } = require("../../acl/acl.js");
 const { vanillaMembersRoleId } = require("../../config/config.js");
-const { addLoginMutex, getPassword, getGameAccountId } = require("../../redis/redis.js");
+const { addLoginMutex, getPassword, getGameAccountId, listLoginMutexes } = require("../../redis/redis.js");
+const { numberToEmoji } = require("../../utils/numbertoemoji.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -61,13 +62,18 @@ const subcommandFn = async (interaction) => {
     return;
   }
 
-  // Retrieve userid
+  // Build message
+  // 1. Retrieve mutex count
+  const loginMutexCount = await listLoginMutexes().length;
+  const loginMutextCountText = numberToEmoji(loginMutexCount);
+
+  // 2. Retrieve userid
   const gameAccountId = await getGameAccountId(accountDiscordId);
   const gameAccountIdText = (gameAccountId) ?
     `\`${gameAccountId}\`` :
     `No game account id set.`;
 
-  // Retrieve password
+  // 3. Retrieve password
   const password = await getPassword(accountDiscordId);
   const passwordText = (password) ?
     `||\`${password}\`||` :
@@ -75,7 +81,7 @@ const subcommandFn = async (interaction) => {
 
   // Send message/announce
   await interaction.channel.send({
-    content: `:inbox_tray: <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
+    content: `${loginMutextCountText} 🟠 <@!${pilotDiscordId}> is going into <@!${accountDiscordId}>!`,
   });
 
   // Send message

@@ -1,7 +1,8 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanAdmin } = require("../../acl/acl.js");
-const { checkLoginMutex, removeLoginMutex } = require("../../redis/redis.js");
+const { checkLoginMutex, removeLoginMutex, listLoginMutexes } = require("../../redis/redis.js");
+const { numberToEmoji } = require("../../utils/numbertoemoji.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -48,9 +49,13 @@ const subcommandFn = async (interaction) => {
   // Remove mutex claim
   await removeLoginMutex(accountDiscordId);
 
+  // Retrieve mutex count
+  const loginMutexCount = await listLoginMutexes().length;
+  const loginMutextCountText = numberToEmoji(loginMutexCount);
+
   // Send message/announce
   await interaction.channel.send({
-    content: `:outbox_tray: <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
+    content: `${loginMutextCountText} ⚫ <@!${pilotDiscordId}> is out from <@!${accountDiscordId}>!`,
     ephemeral: false,
   });
 
