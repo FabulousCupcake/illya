@@ -2,7 +2,7 @@ const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanAdmin } = require("../../acl/acl.js");
 const { vanillaMembersRoleId } = require("../../config/config.js");
-const { addLoginMutex, getPassword } = require("../../redis/redis.js");
+const { addLoginMutex, getPassword, getGameAccountId } = require("../../redis/redis.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
