@@ -26,7 +26,7 @@ const buildAliasCommand = (name, subcommand) => {
 }
 const loginAliasCommand = buildAliasCommand("il", login);
 const logoutAliasCommand = buildAliasCommand("io", logout);
-const statusAliasCommand = buildAliasCommand("i", status);
+const statusAliasCommand = buildAliasCommand("ii", status);
 
 const commandFnMap = {
   "login": loginFn,

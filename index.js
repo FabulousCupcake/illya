@@ -17,7 +17,7 @@ const client = new Client({
 const readyHandler = () => console.log(`Logged in as ${client.user.tag}!`);
 
 const handler = async (interaction) => {
-  const recognizedCommandsList = ["illya", "i", "il", "io"];
+  const recognizedCommandsList = ["illya", "ii", "il", "io"];
 
   // Respond only to slashcommand and certain command names
   if (!interaction.isChatInputCommand()) return;
