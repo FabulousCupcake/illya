@@ -1,4 +1,13 @@
+// https://github.com/anton-bot/number-to-emoji
 const numberToEmoji = str => {
+  if (str === undefined || str === null || str === '') {
+    return str;
+  }
+
+  if (typeof str !== 'string') {
+    str = str.toString();
+  }
+
   if (str === '10') {
     return '🔟';
   }
