@@ -17,7 +17,8 @@ const command = new SlashCommandBuilder()
 
 // Aliases
 const buildAliasCommand = (name, subcommand) => {
-  const cmd = new SlashCommandBuilder(name);
+  const cmd = new SlashCommandBuilder();
+  cmd.name = name;
   cmd.description = subcommand.description;
   cmd.options = subcommand.options;
 
