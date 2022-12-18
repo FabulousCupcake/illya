@@ -123,7 +123,8 @@ const removePilot = async (discordId) => {
 
 const isPilot = async (discordId) => {
   const key = `pilot-${discordId}`;
-  return await !!redisClient.async.get(key);
+  const val = await redisClient.async.get(key);
+  return !!val;
 }
 
 const listPilots = async () => {
