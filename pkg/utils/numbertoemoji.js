@@ -8,6 +8,10 @@ const numberToEmoji = str => {
     str = str.toString();
   }
 
+  if (str === "0") {
+    return "⚫";
+  }
+
   if (str === '10') {
     return '🔟';
   }
