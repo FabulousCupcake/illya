@@ -40,7 +40,7 @@ const subcommandFn = async (interaction) => {
 
   // Obtain all existing mutex claims
   const mutexes = await listLoginMutexes();
-  mutexes.sort((a, b) => a.timestamp > b.timestamp);
+  mutexes.sort((a, b) => a.timestamp - b.timestamp);
 
   // Build message
   let index = 0;
