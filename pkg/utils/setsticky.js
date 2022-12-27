@@ -1,5 +1,7 @@
 const { getAnnounceChannelId, getStickyMessageId, listLoginMutexes, setStickyMessageId } = require("../redis/redis")
 
+const HORIZONTAL_RULE = "**~~•                                                                                                         •~~**";
+
 const buildStatusReportMessage = async () => {
   // 1. Obtain all existing mutex claims
   const mutexes = await listLoginMutexes();
@@ -41,7 +43,10 @@ const updateStickyMessage = async (client) => {
   const channel = await client.channels.fetch(announceChannelId);
 
   // 1. Build message
-  const message = await buildStatusReportMessage();
+  const message = [
+    HORIZONTAL_RULE,
+    await buildStatusReportMessage(),
+  ].join("\n");
 
   // 2. Delete previous
   try {
