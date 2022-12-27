@@ -13,27 +13,36 @@ const buildStatusReportMessage = async () => {
   // 2. Build Message
   let index;
   const message = [];
+  const selfMutexes = mutexes.filter(m => m.account == m.pilot);
+  const pilotMutexes = mutexes.filter(m => m.account != m.pilot);
 
   // 2a. Self Logins
-  index = 0;
   message.push("**🧑 People Around:**");
-  mutexes.forEach(m => {
-    if (m.account != m.pilot) return;
 
-    index += 1;
-    message.push(`\`${index}\`. <@!${m.account}> around since <t:${m.timestamp}:R>`);
-  });
+  if (selfMutexes.length === 0)  {
+    message.push("No one!")
+  } else {
+    index = 0;
+    selfMutexes.forEach(m => {
+      index += 1;
+      message.push(`\`${index}\`. <@!${m.account}> around since <t:${m.timestamp}:R>`);
+    });
+  }
+
+  message.push("");
 
   // 2b. Pilot Logins
-  index = 0;
-  message.push("");
   message.push("**🧑‍✈️ Pilots Checked In:**");
-  mutexes.forEach(m => {
-    if (m.account == m.pilot) return;
 
-    index += 1;
-    message.push(`\`${index}\`. <@!${m.pilot}> in <@!${m.account}> <t:${m.timestamp}:R>`);
-  });
+  if (pilotMutexes.length === 0) {
+    message.push("No one!");
+  } else {
+    index = 0;
+    pilotMutexes.forEach(m => {
+      index += 1;
+      message.push(`\`${index}\`. <@!${m.pilot}> in <@!${m.account}> <t:${m.timestamp}:R>`);
+    });
+  }
 
   return message.join("\n");
 }
