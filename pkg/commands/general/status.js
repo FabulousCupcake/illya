@@ -1,7 +1,7 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanMember, isCalledByPilot } = require("../../acl/acl.js");
-const { listLoginMutexes } = require("../../redis/redis.js");
+const { buildStatusReportMessage } = require("../../utils/setsticky.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -38,26 +38,8 @@ const subcommandFn = async (interaction) => {
     ephemeral: true,
   });
 
-  // Obtain all existing mutex claims
-  const mutexes = await listLoginMutexes();
-  mutexes.sort((a, b) => a.timestamp - b.timestamp);
-
   // Build message
-  let index = 0;
-  const message = mutexes.map(m => {
-    index += 1;
-
-    return `\`${index}\`. <@!${m.account}> claimed by <@!${m.pilot}> <t:${m.timestamp}:R>`;
-  }).join("\n");
-
-  // No one claimed
-  if (!message) {
-    interaction.followUp({
-      content: "No one is logged in on anyone!",
-      ephemeral: true,
-    });
-    return;
-  }
+  const message = await buildStatusReportMessage();
 
   // Send message
   interaction.followUp({
