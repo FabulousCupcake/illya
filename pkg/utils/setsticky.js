@@ -44,9 +44,13 @@ const updateStickyMessage = async (client) => {
   const message = await buildStatusReportMessage();
 
   // 2. Delete previous
-  const stickyMessageId = await getStickyMessageId();
-  const stickyMessage = await channel.messages.fetch(stickyMessageId);
-  if (stickyMessage) await stickyMessage.delete();
+  try {
+    const stickyMessageId = await getStickyMessageId();
+    const stickyMessage = await channel.messages.fetch(stickyMessageId);
+    if (stickyMessage) await stickyMessage.delete();
+  } catch (err) {
+    console.error("Failed deleting sticky message", err);
+  }
 
   // 3. Post new
   const discordMessage = await channel.send({
