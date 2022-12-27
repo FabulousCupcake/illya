@@ -16,18 +16,18 @@ const buildStatusReportMessage = async () => {
 
   // 2a. Self Logins
   index = 0;
-  message.push("**Self Logins:**");
+  message.push("**🧑 People Around:**");
   mutexes.forEach(m => {
     if (m.account != m.pilot) return;
 
     index += 1;
-    message.push(`\`${index}\`. <@!${m.account}> is around since <t:${m.timestamp}:R>`);
+    message.push(`\`${index}\`. <@!${m.account}> around since <t:${m.timestamp}:R>`);
   });
 
   // 2b. Pilot Logins
   index = 0;
   message.push("");
-  message.push("**Pilot Logins:**");
+  message.push("**🧑‍✈️ Pilots Checked In:**");
   mutexes.forEach(m => {
     if (m.account == m.pilot) return;
 
