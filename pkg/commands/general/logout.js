@@ -65,8 +65,11 @@ const subcommandFn = async (interaction) => {
   // Send message/announce
   const announceChannelId = await getAnnounceChannelId();
   const announceChannel = await interaction.client.channels.fetch(announceChannelId);
+  const announceMessage = (pilotDiscordId == accountDiscordId) ?
+    `⚫ <@!${pilotDiscordId}> no longer around!` :
+    `${pilotLoginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`;
   await announceChannel.send({
-    content: `${pilotLoginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`,
+    content: announceMessage,
   });
 
   // Update Sticky
