@@ -32,7 +32,7 @@ const buildStatusReportMessage = async () => {
     if (m.account == m.pilot) return;
 
     index += 1;
-    message.push(`\`${index}\`. <@!${m.account}> claimed by <@!${m.pilot}> <t:${m.timestamp}:R>`);
+    message.push(`\`${index}\`. <@!${m.pilot}> in <@!${m.account}> <t:${m.timestamp}:R>`);
   });
 
   return message.join("\n");
