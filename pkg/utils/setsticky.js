@@ -19,7 +19,7 @@ const buildStatusReportMessage = async () => {
     if (m.account != m.pilot) return;
 
     index += 1;
-    message.push(`\`${index}\`. <@!${m.account}> has been around since <t:${m.timestamp}:R>`);
+    message.push(`\`${index}\`. <@!${m.account}> is around since <t:${m.timestamp}:R>`);
   });
 
   // 2b. Pilot Logins
