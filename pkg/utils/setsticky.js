@@ -49,7 +49,12 @@ const updateStickyMessage = async (client) => {
   if (stickyMessage) await stickyMessage.delete();
 
   // 3. Post new
-  const discordMessage = await channel.send({ content: message });
+  const discordMessage = await channel.send({
+    content: message,
+    allowedMentions: {
+      parse: [],
+    }
+  });
 
   // 4. Save ID for future removal
   await setStickyMessageId(discordMessage.id);
