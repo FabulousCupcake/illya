@@ -1,8 +1,9 @@
 const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, targetIsCaller, isCalledByPilot } = require("../../acl/acl.js");
-const { checkLoginMutex, removeLoginMutex, listLoginMutexes } = require("../../redis/redis.js");
+const { checkLoginMutex, removeLoginMutex, listLoginMutexes, getAnnounceChannelId } = require("../../redis/redis.js");
 const { numberToEmoji } = require("../../utils/numbertoemoji.js");
+const { updateStickyMessage } = require("../../utils/setsticky.js");
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -57,13 +58,19 @@ const subcommandFn = async (interaction) => {
   await removeLoginMutex(accountDiscordId);
 
   // Retrieve mutex count
-  const loginMutexCount = (await listLoginMutexes()).length;
-  const loginMutexCountText = numberToEmoji(loginMutexCount);
+  const loginMutexes = await listLoginMutexes();
+  const pilotLoginMutexCount = loginMutexes.filter(lm => lm.account != lm.pilot).length;
+  const pilotLoginMutexCountText = numberToEmoji(pilotLoginMutexCount);
 
   // Send message/announce
-  await interaction.channel.send({
-    content: `${loginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`,
+  const announceChannelId = await getAnnounceChannelId();
+  const announceChannel = await interaction.client.channels.fetch(announceChannelId);
+  await announceChannel.send({
+    content: `${pilotLoginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`,
   });
+
+  // Update Sticky
+  await updateStickyMessage(interaction.client);
 
   // Simple followup
   await interaction.followUp({

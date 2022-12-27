@@ -2,8 +2,12 @@ const { SlashCommandSubcommandBuilder } = require("@discordjs/builders");
 
 const { isCalledByOwner, isCalledByClanAdmin } = require("../../acl/acl.js");
 const { vanillaMembersRoleId } = require("../../config/config.js");
-const { addLoginMutex, getPassword, getGameAccountId, listLoginMutexes } = require("../../redis/redis.js");
+const { addLoginMutex, getPassword, getGameAccountId, listLoginMutexes, getAnnounceChannelId } = require("../../redis/redis.js");
 const { numberToEmoji } = require("../../utils/numbertoemoji.js");
+const { updateStickyMessage } = require("../../utils/setsticky.js");
+
+const SELF_LOGIN_EMOJI = "🟢";
+const PILOT_LOGIN_EMOJI = "🟠";
 
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
@@ -64,8 +68,9 @@ const subcommandFn = async (interaction) => {
 
   // Build message
   // 1. Retrieve mutex count
-  const loginMutexCount = (await listLoginMutexes()).length;
-  const loginMutexCountText = numberToEmoji(loginMutexCount);
+  const loginMutexes = await listLoginMutexes();
+  const pilotLoginMutexCount = loginMutexes.filter(lm => lm.account != lm.pilot).length;
+  const pilotLoginMutexCountText = numberToEmoji(pilotLoginMutexCount);
 
   // 2. Retrieve userid
   const gameAccountId = await getGameAccountId(accountDiscordId);
@@ -79,10 +84,16 @@ const subcommandFn = async (interaction) => {
     `||\`${password}\`||` :
     "No password set!";
 
-  // Send message/announce
-  await interaction.channel.send({
-    content: `${loginMutexCountText} 🟠 <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`,
-  });
+  // 4. Send message/announce
+  const announceChannelId = await getAnnounceChannelId();
+  const announceChannel = await interaction.client.channels.fetch(announceChannelId);
+  const announceMessage = (pilotDiscordId == accountDiscordId) ?
+    `${SELF_LOGIN_EMOJI} <@!${pilotDiscordId}> is around!` :
+    `${pilotLoginMutexCountText} ${PILOT_LOGIN_EMOJI} <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`;
+  await announceChannel.send({ content: announceMessage });
+
+  // 5. Update Sticky
+  await updateStickyMessage(interaction.client);
 
   // Send message
   await interaction.followUp({
