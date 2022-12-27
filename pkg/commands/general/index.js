@@ -4,6 +4,7 @@ const { subcommand: login, subcommandFn: loginFn } = require("./login.js");
 const { subcommand: logout, subcommandFn: logoutFn } = require("./logout.js");
 const { subcommand: setpassword, subcommandFn: setpasswordFn } = require("./setpassword.js");
 const { subcommand: setaccountid, subcommandFn: setaccountidFn } = require("./setaccountid.js");
+const { subcommand: setchannel, subcommandFn: setchannelFn } = require("./setchannel.js");
 const { subcommand: status, subcommandFn: statusFn } = require("./status.js");
 
 const command = new SlashCommandBuilder()
@@ -13,6 +14,7 @@ const command = new SlashCommandBuilder()
   .addSubcommand(logout)
   .addSubcommand(setpassword)
   .addSubcommand(setaccountid)
+  .addSubcommand(setchannel)
   .addSubcommand(status)
 
 // Aliases
@@ -33,6 +35,7 @@ const commandFnMap = {
   "logout": logoutFn,
   "setpassword": setpasswordFn,
   "setaccountid": setaccountidFn,
+  "setchannel": setchannelFn,
   "status": statusFn,
 }
 
