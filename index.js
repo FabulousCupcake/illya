@@ -67,11 +67,12 @@ const handler = async (interaction) => {
       return `[${content}]`;
     });
 
+    const commandName = interaction.commandName;
     const discordUserId = interaction.user.id;
     const discordUserTag = interaction.user.tag;
     const optionsText = optionsToText(interaction.options.data);
 
-    console.info(`${discordUserId} (${discordUserTag}): ${optionsText}`);
+    console.info(`${discordUserId} (${discordUserTag}): ${commandName} ${optionsText}`);
   })();
 
   // Execute it
