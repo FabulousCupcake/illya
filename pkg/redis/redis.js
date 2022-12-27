@@ -70,6 +70,16 @@ const getAnnounceChannelId = async () => {
   return await redisClient.async.get(key);
 }
 
+const setStickyMessageId = async (messageId) => {
+  const key = `stickyMessageId`;
+  await redisClient.async.set(key, messageId);
+}
+
+const getStickyMessageId = async () => {
+  const key = `stickyMessageId`;
+  return await redisClient.async.get(key);
+}
+
 const addLoginMutex = async (accountDiscordId, pilotDiscordId) => {
   const key = `login-${accountDiscordId}:pilot`;
 
@@ -158,6 +168,8 @@ module.exports = {
 
   setAnnounceChannelId,
   getAnnounceChannelId,
+  setStickyMessageId,
+  getStickyMessageId,
 
   addLoginMutex,
   checkLoginMutex,
