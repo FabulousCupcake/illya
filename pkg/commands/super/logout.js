@@ -60,7 +60,7 @@ const subcommandFn = async (interaction) => {
   const announceChannel = await interaction.client.channels.fetch(announceChannelId);
   const announceMessage = (pilotDiscordId == accountDiscordId) ?
     `⚫ <@!${pilotDiscordId}> is no longer around!` :
-    `${pilotLoginMutexCountText} ⚫ <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`;
+    `⚫ ${pilotLoginMutexCountText} <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`;
   await announceChannel.send({
     content: announceMessage,
   });

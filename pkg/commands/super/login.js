@@ -89,7 +89,7 @@ const subcommandFn = async (interaction) => {
   const announceChannel = await interaction.client.channels.fetch(announceChannelId);
   const announceMessage = (pilotDiscordId == accountDiscordId) ?
     `${SELF_LOGIN_EMOJI} <@!${pilotDiscordId}> is around!` :
-    `${pilotLoginMutexCountText} ${PILOT_LOGIN_EMOJI} <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`;
+    `${PILOT_LOGIN_EMOJI} ${pilotLoginMutexCountText} <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`;
   await announceChannel.send({ content: announceMessage });
 
   // 5. Update Sticky
