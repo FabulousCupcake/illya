@@ -9,7 +9,7 @@ const numberToEmoji = str => {
   }
 
   if (str === "0") {
-    return "⚫";
+    return "🅾️";
   }
 
   if (str === '10') {
