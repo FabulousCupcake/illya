@@ -1,6 +1,6 @@
 const { getAnnounceChannelId, getStickyMessageId, listLoginMutexes, setStickyMessageId } = require("../redis/redis")
 
-const HORIZONTAL_RULE = "**~~•                                                                                                         •~~**";
+const HORIZONTAL_RULE = "**~~•                                                                                                      •~~**";
 
 const buildStatusReportMessage = async () => {
   // 1. Obtain all existing mutex claims
