@@ -5,6 +5,9 @@ const { checkLoginMutex, removeLoginMutex, listLoginMutexes, getAnnounceChannelI
 const { numberToEmoji } = require("../../utils/numbertoemoji.js");
 const { updateStickyMessage } = require("../../utils/setsticky.js");
 
+const BURNER_ACCOUNT_ID = "632426703";
+const BURNER_ACCOUNT_PASS = "Eternum4ever";
+
 const checkPermissions = async (interaction) => {
   if (isCalledByOwner(interaction)) {
     return {
@@ -81,7 +84,10 @@ const subcommandFn = async (interaction) => {
 
   // Simple followup
   await interaction.followUp({
-    content: "Successfully logged out!",
+    content: [
+      "Successfully logged out! Use the following burner account to cleanly logout!",
+      `\`${BURNER_ACCOUNT_ID}\` ||\`${BURNER_ACCOUNT_PASS}\`||`,
+    ].join("\n"),
     ephemeral: true,
   });
 }
