@@ -100,7 +100,6 @@ const subcommandFn = async (interaction) => {
   await announceChannel.send({
     content: announceMessage,
     allowedMentions: {
-      parse: ["users"],
       users: [accountDiscordId],
     }
   });
