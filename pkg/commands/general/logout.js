@@ -84,7 +84,7 @@ const subcommandFn = async (interaction) => {
   // Followup Message
   // If not self-login, include burner details
   let followupMessage = "Successfully logged out!";
-  if (pilotDiscordId == accountDiscordId) {
+  if (pilotDiscordId != accountDiscordId) {
     followupMessage += "Use the following burner account to cleanly logout!";
     followupMessage += "\n";
     followupMessage += `\`${BURNER_ACCOUNT_ID}\` ||\`${BURNER_ACCOUNT_PASS}\`||`;
