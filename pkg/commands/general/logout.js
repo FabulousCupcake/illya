@@ -81,12 +81,17 @@ const subcommandFn = async (interaction) => {
   // Update Sticky
   await updateStickyMessage(interaction.client);
 
-  // Simple followup
+  // Followup Message
+  // If not self-login, include burner details
+  let followupMessage = "Successfully logged out!";
+  if (pilotDiscordId == accountDiscordId) {
+    followupMessage += "Use the following burner account to cleanly logout!";
+    followupMessage += "\n";
+    followupMessage += `\`${BURNER_ACCOUNT_ID}\` ||\`${BURNER_ACCOUNT_PASS}\`||`;
+  }
+
   await interaction.followUp({
-    content: [
-      "Successfully logged out! Use the following burner account to cleanly logout!",
-      `\`${BURNER_ACCOUNT_ID}\` ||\`${BURNER_ACCOUNT_PASS}\`||`,
-    ].join("\n"),
+    content: followupMessage,
     ephemeral: true,
   });
 }
