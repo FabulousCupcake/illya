@@ -97,7 +97,13 @@ const subcommandFn = async (interaction) => {
   const announceMessage = (pilotDiscordId == accountDiscordId) ?
     `${SELF_LOGIN_EMOJI} <@!${pilotDiscordId}> is around!` :
     `${PILOT_LOGIN_EMOJI} ${pilotLoginMutexCountText} <@!${pilotDiscordId}> in <@!${accountDiscordId}>!`;
-  await announceChannel.send({ content: announceMessage });
+  await announceChannel.send({
+    content: announceMessage,
+    allowedMentions: {
+      parse: ["users"],
+      users: [accountDiscordId],
+    }
+  });
 
   // 5. Update Sticky
   await updateStickyMessage(interaction.client);

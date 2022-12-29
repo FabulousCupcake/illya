@@ -70,6 +70,10 @@ const subcommandFn = async (interaction) => {
     `⚫ ${pilotLoginMutexCountText} <@!${pilotDiscordId}> out of <@!${accountDiscordId}>!`;
   await announceChannel.send({
     content: announceMessage,
+    allowedMentions: {
+      parse: ["users"],
+      users: [accountDiscordId],
+    }
   });
 
   // Update Sticky
