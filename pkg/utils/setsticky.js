@@ -65,7 +65,7 @@ const updateStickyMessage = async (client) => {
   // 1. Build message
   const message = [
     HORIZONTAL_RULE,
-    await buildStatusReportMessage(),
+    await buildStatusReportMessage(client),
   ].join("\n");
 
   // 2. Delete previous
