@@ -105,7 +105,7 @@ const subcommandFn = async (interaction) => {
   });
 
   // 5. Update Sticky
-  await updateStickyMessage(interaction.client);
+  await updateStickyMessage(interaction);
 
   // Send password
   await interaction.followUp({

@@ -93,7 +93,7 @@ const subcommandFn = async (interaction) => {
   await announceChannel.send({ content: announceMessage });
 
   // 5. Update Sticky
-  await updateStickyMessage(interaction.client);
+  await updateStickyMessage(interaction);
 
   // Send message
   await interaction.followUp({

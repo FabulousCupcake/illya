@@ -79,7 +79,7 @@ const subcommandFn = async (interaction) => {
   });
 
   // Update Sticky
-  await updateStickyMessage(interaction.client);
+  await updateStickyMessage(interaction);
 
   // Followup Message
   // If not self-login, include burner details

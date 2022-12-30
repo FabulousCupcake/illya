@@ -2,7 +2,7 @@ const { getAnnounceChannelId, getStickyMessageId, listLoginMutexes, setStickyMes
 
 const HORIZONTAL_RULE = "~~‌                                                                                                      ‌~~";
 
-const buildStatusReportMessage = async (client) => {
+const buildStatusReportMessage = async (interaction) => {
   // 1. Obtain all existing mutex claims
   const mutexes = await listLoginMutexes();
 
@@ -11,9 +11,9 @@ const buildStatusReportMessage = async (client) => {
 
   // 1b. Enrich with nickname information
   const pilotIds = mutexes.map(m => m.pilot);
-  await client.guild.members.fetch({ user: pilotIds });
+  await interaction.guild.members.fetch({ user: pilotIds });
   await Promise.all(mutexes.map(async (m) => {
-    const user = await client.guild.members.fetch({ user: m.pilot });
+    const user = await interaction.guild.members.fetch({ user: m.pilot });
     m.pilotNickname = user.displayName;
   }));
 
@@ -58,14 +58,15 @@ const buildStatusReportMessage = async (client) => {
   return message.join("\n");
 }
 
-const updateStickyMessage = async (client) => {
+const updateStickyMessage = async (interaction) => {
+  const client = interaction.client;
   const announceChannelId = await getAnnounceChannelId();
   const channel = await client.channels.fetch(announceChannelId);
 
   // 1. Build message
   const message = [
     HORIZONTAL_RULE,
-    await buildStatusReportMessage(client),
+    await buildStatusReportMessage(interaction),
   ].join("\n");
 
   // 2. Delete previous

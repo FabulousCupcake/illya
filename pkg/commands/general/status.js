@@ -39,7 +39,7 @@ const subcommandFn = async (interaction) => {
   });
 
   // Build message
-  const message = await buildStatusReportMessage();
+  const message = await buildStatusReportMessage(interaction);
 
   // Send message
   interaction.followUp({

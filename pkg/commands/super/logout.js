@@ -66,7 +66,7 @@ const subcommandFn = async (interaction) => {
   });
 
   // Update Sticky
-  await updateStickyMessage(interaction.client);
+  await updateStickyMessage(interaction);
 
   // Simple followup
   await interaction.followUp({
