@@ -2,13 +2,24 @@ const { getAnnounceChannelId, getStickyMessageId, listLoginMutexes, setStickyMes
 
 const HORIZONTAL_RULE = "~~‌                                                                                                      ‌~~";
 
-const buildStatusReportMessage = async () => {
+const buildStatusReportMessage = async (client) => {
   // 1. Obtain all existing mutex claims
   const mutexes = await listLoginMutexes();
-  mutexes.sort((a, b) => a.timestamp - b.timestamp);
 
   // 1a. It can be empty
   if (mutexes.length === 0) return "No one is logged in!";
+
+  // 1b. Enrich with nickname information
+  const pilotIds = mutexes.map(m => m.pilot);
+  await client.guild.members.fetch({ user: pilotIds });
+  await Promise.all(mutexes.map(async (m) => {
+    const user = await client.guild.members.fetch({ user: m.pilot });
+    m.pilotNickname = user.displayName;
+  }));
+
+  // 1c. Sort
+  mutexes.sort((a, b) => a.timestamp - b.timestamp);
+  mutexes.sort((a, b) => a.pilotNickname.localeCompare(b.pilotNickname));
 
   // 2. Build Message
   let index;
