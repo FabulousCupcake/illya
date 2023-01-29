@@ -7,6 +7,8 @@ const leadsDiscordIds = [
   "243784721224564737", // bjdabz#7354
   "368710270450794506", // SpookyBlooky#5401
   "453740256223821835", // attaboom#5602 • gabi
+  "408470996773765120", // catgirl147#8684 • Sariel
+  "142881990071287809", // Gale#5406
 ];
 
 const vanillaLeadsRoleId = "866363432323514368";
